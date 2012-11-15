@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "generators/gencons"
+	"$selfillum" 1
+	"$model" 1
+}

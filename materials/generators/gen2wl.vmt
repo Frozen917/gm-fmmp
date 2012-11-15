@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "generators/gen2wl"
+	"$surfaceprop" "metal"
+	"$model" "1"
+	"$bumpmap" "generators/gen2_bump"
+   	"$selfillum" "1"
+	"$selfillummask" "generators/gen2wl_light"
+	"$phong"     "1"
+	"$halflambert"	1
+ 	"$phongexponent"   "60"
+ 	"$phongboost"   "1"
+ 	"$phongfresnelranges"   "[.5 .8 1]"
+}
+

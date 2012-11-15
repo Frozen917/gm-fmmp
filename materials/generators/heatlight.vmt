@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "generators/heatlight"
+	"$selfillum" 1
+	"$selfillummask" "generators/enerlight"
+	"$model" 1
+}

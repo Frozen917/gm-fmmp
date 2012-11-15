@@ -1,0 +1,7 @@
+"AddonInfo"
+{
+	"name"		"Gamemode"
+	"version"	"Prototype"
+	"author_name"	"Frozen, Marmotte, Poulpe"
+	"info"		"Build your spacecraft"
+}
