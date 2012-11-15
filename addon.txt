@@ -2,6 +2,6 @@
 {
 	"name"		"Gamemode"
 	"version"	"Prototype"
-	"author_name"	"Frozen, Marmotte, Poulpe"
+	"author_name"	"Frozen, Marmotte, Poulpe, Mandrac"
 	"info"		"Build your spacecraft"
 }
