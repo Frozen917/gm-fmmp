@@ -154,6 +154,70 @@ function TOOL:Holster()
     self:SetStage(0)
 end
 
+
+function TOOL.BuildCPanel(CPanel)
+	CPanel:AddControl("Header", { Text = "Pipe Tool", Description = "Create Pipes!" })
+	local comboBox = vgui.Create("DComboBox", CPanel)
+	local a = comboBox:AddChoice("Fancy")
+	local b = comboBox:AddChoice("Fast")
+	local c = comboBox:AddChoice("None")
+	
+	local curr = GetConVar("gm_fmmp_pipe_rendertype"):GetString()
+	if curr == "fancy" then
+		comboBox:ChooseOption("Fancy", a)
+	elseif curr == "fast" then
+		comboBox:ChooseOption("Fast", b)
+	else
+		comboBox:ChooseOption("None", c)
+	end
+	
+	comboBox.OnSelect = function(index, value, data)
+		if data == "Fancy" then
+			RunConsoleCommand("gm_fmmp_pipe_rendertype","fancy")
+		else
+			if data == "Fast" then
+				RunConsoleCommand("gm_fmmp_pipe_rendertype","fast")
+			elseif data == "None" then
+				RunConsoleCommand("gm_fmmp_pipe_rendertype","none")
+			end
+		end
+	end
+	
+	local NumSlider = vgui.Create( "DNumSlider", CPanel )
+	--NumSlider:SetPos( 25,50 )
+	NumSlider:SetWide( 150 )
+	NumSlider:SetText( "Pipe model count" )
+	NumSlider:SetMin( 1 ) -- Minimum number of the slider
+	NumSlider:SetMax( 256 ) -- Maximum number of the slider
+	NumSlider:SetDecimals( 0 ) -- Sets a decimal. Zero means it's a whole number
+	NumSlider:SetConVar( "gm_fmmp_pipe_modelcount" ) -- Set the convar
+	
+	local lbl = vgui.Create("DLabel", CPanel)
+	lbl:SetText("High values mean smooth pipes but lower performance")
+	
+	
+	comboBox.OnSelect = function(index, value, data)
+		if data == "Fancy" then
+			RunConsoleCommand("gm_fmmp_pipe_rendertype","fancy")
+			NumSlider:SetVisible(true)
+			lbl:SetVisible(true)
+		else
+			NumSlider:SetVisible(false)
+			lbl:SetVisible(false)
+			if data == "Fast" then
+				RunConsoleCommand("gm_fmmp_pipe_rendertype","fast")
+			elseif data == "None" then
+				RunConsoleCommand("gm_fmmp_pipe_rendertype","none")
+			end
+		end
+	end
+	CPanel:AddItem(comboBox)
+	CPanel:AddItem(NumSlider)
+	CPanel:AddItem(lbl)
+	
+end
+
+
 function TOOL:Reload(trace)
     if SERVER then
         PipeTool.UnlinkRemovedEntity(trace.Entity)
