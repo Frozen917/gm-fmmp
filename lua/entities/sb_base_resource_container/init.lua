@@ -27,17 +27,19 @@ function ENT:ProcessResources()
 end
 
 function ENT:TakeResource(resource, amount)
-	amount = math.min(amount, self.resources[resource].flow)
-	if self.resources[resource].amount < amount then
-		local consumed = self.resources[resource].amount
+	if not self.resources[resource] then return 0 end
+	local possessed = self.resources[resource].amount or 0
+	amount = math.min(amount, self.resources[resource].flow or 0)
+	if possessed < amount then
 		self.resources[resource].amount = 0
-		return consume
+		return possessed
 	else
-		self.resources[resource].amount = self.resources[resource].amount - amount
+		self.resources[resource].amount = possessed - amount
 		return amount
 	end
 end
 
 function ENT:AskResource(resource)
-	return math.min(self.resources[resource].flow, self.resources[resource].amount)
+	if not self.resources[resource] then return 0 end
+	return math.min(self.resources[resource].flow or 0, self.resources[resource].amount or 0)
 end
