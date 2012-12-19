@@ -77,3 +77,13 @@ function ENT:AskResource(resource)
 	end
 	return available
 end
+
+function ENT:IsContainer()
+	local isContainer = true
+	for _,slot in ipairs(self:GetSlots()) do
+		if slot:GetGenerator() and not slot:GetGenerator():IsContainer() then
+			isContainer = false
+		end
+	end
+	return isContainer
+end

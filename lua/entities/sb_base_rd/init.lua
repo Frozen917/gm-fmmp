@@ -18,3 +18,7 @@ end
 function ENT:AskResource(resource)
 	return 0
 end
+
+function ENT:IsContainer()
+	return self.isContainer or false
+end

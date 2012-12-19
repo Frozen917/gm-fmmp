@@ -5,6 +5,7 @@ include("shared.lua")
 
 function ENT:ServerSideInit()
 	ResourceDistribution.AddDevice(self)
+	self.isContainer = true
 	self:SetSkin(1)
 end
 
@@ -14,13 +15,18 @@ end
 
 function ENT:ProcessResources()
 	if not self.holder then return end
+	local consumed = 0
 	for _,plug in ipairs(self.holder:GetPlugs()) do
 		if plug:IsPlugged() then
 			for resource,amounts in pairs(self.resources) do
 				local currentAmount = amounts.amount
 				local maxAmount = amounts.maxamount
 				local flow = amounts.flow
-				self.resources[resource].amount = currentAmount + (plug:GetOtherPlug():GetEntity():TakeResource(resource, math.min(maxAmount - currentAmount, amounts.flow)) or 0)
+				local connected = plug:GetOtherPlug():GetEntity()
+				if not connected:IsContainer() then
+					consumed = connected:TakeResource(resource, math.min(maxAmount - currentAmount, amounts.flow - consumed)) or 0
+					self.resources[resource].amount = currentAmount + consumed
+				end
 			end
 		end
 	end
