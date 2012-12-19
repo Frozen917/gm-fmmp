@@ -7,6 +7,7 @@ ResourceDistribution.floor = math.floor	-- Optimization
 function ResourceDistribution.Think()
 	local second = ResourceDistribution.floor(CurTime())
 	if second > ResourceDistribution.lastProcessing then	-- Do it every second
+		ResourceDistribution.lastProcessing = second
 		for i,v in ipairs(ResourceDistribution.Devices) do
 			v:ProcessResources()
 		end

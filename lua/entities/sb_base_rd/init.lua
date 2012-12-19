@@ -11,15 +11,10 @@ function ENT:Use()
 	self.enabled = not self.enabled
 end
 
-function ENT:CacheResource(sResource)
-	return self.resourceCache[sResource] or 0
+function ENT:TakeResource(resource, amount)
+	return 0
 end
 
-function ENT:TakeResource(sResource, nAmount)
-	local cacheAmount = self:CacheResource(sResource)
-	if cacheAmount >= nAmount then
-		self.resourceCache[sResource] = self.resourceCache[sResource] - nAmount
-		return true
-	end
-	return false
+function ENT:AskResource(resource)
+	return 0
 end

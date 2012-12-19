@@ -3,7 +3,6 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
-
 function ENT:ServerSideInit()
 	self:SetModel("models/mandrac/lgm/energycell_s.mdl")
 	self:PhysicsInit(SOLID_VPHYSICS)

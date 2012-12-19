@@ -5,7 +5,6 @@ include("shared.lua")
 
 function ENT:ServerSideInit()
 	self:SetSkin(1)
-	ResourceDistribution.AddDevice(self)
 end
 
 function ENT:Use()
@@ -32,36 +31,11 @@ function ENT:Toggle()
 	end
 end
 
-function ENT:ProcessResources()
-	self.resourceCache = {}
-	local status = self.enabled
-	if self.holder == nil or not self.holder:IsValid() then
-		return
+function ENT:TakeResource(resource, amount)
+	if not self.enabled then return end
+	if (self.outputRates[resource] > amount) then
+		return amount
+	else
+		return self.outputRates[resource]
 	end
-	local hasResource = true
-	for k,v in pairs(self.inputRates) do
-		if self.holder:CacheResource(k) < v then
-			hasResource = false
-		end
-	end
-	if hasResource then
-		for k,v in pairs(self.inputRates) do
-			self.holder:TakeResource(k, v)
-		end
-		for k,v in pairs(self.outputRates) do
-			self.resourceCache[k] = v
-		end
-	end
-	self.runnable = hasResource
-	self.enabled = self.runnable and self.enabled
-	if status != self.enabled then
-		self:UpdateStatus()
-	end
-end
-
-function ENT:OnRemove()
-	ResourceDistribution.RemoveDevice(self)
-end
-
-function ENT:UpdateStatus()
 end

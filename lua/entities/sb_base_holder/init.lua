@@ -58,67 +58,22 @@ function ENT:Think()
 	return true
 end
 
-function ENT:ProcessResources()
-	local status = self.enabled
-	self.resourceCache = {}
-	local devices = {}
-	local hasResource = true
-	local adjustedInputRates = {}
-	for k,v in pairs(self.inputRates) do
-		adjustedInputRates[k] = v
-	end
-	for i,v in ipairs(self:GetSlots()) do
-		if v:GetGenerator() != nil then
-			for k,a in pairs(v:GetGenerator().inputRates) do
-				adjustedInputRates[k] = (adjustedInputRates[k] or 0) + a
-			end
+function ENT:TakeResource(resource, amount)
+	local taken = 0
+	for _,slot in ipairs(self:GetSlots()) do
+		if not slot:IsFree() then
+			taken = taken + slot:GetGenerator():TakeResource(resource, math.max(0, amount - taken))
 		end
 	end
-	for k,v in pairs(adjustedInputRates) do
-		local plugs = {}
-		local amount = 0
-		for i,p in ipairs(self:GetPlugs()) do
-			if p:IsPlugged() then
-				local remoteAmount = p:GetOtherPlug():GetEntity():CacheResource(k)
-				if amount + remoteAmount > v then
-					remoteAmount = v - amount
-				end
-				if remoteAmount > 0 then
-					table.insert(plugs, { p, k, remoteAmount })
-				end
-				amount = amount + remoteAmount
-			end
-		end
-		if amount == v then
-			table.insert(devices, plugs)
-		else
-			hasResource = false
+	return taken
+end
+
+function ENT:AskResource(resource)
+	local available = 0
+	for _,slot in ipairs(self:GetSlots()) do
+		if not slot:IsFree() then
+			available = available + slot:GetGenerator():AskResource(resource)
 		end
 	end
-	local resources = {}
-	if hasResource then
-		for i,r in ipairs(devices) do
-			for j,p in ipairs(r) do
-				p[1]:GetOtherPlug():GetEntity():TakeResource(p[2], p[3])
-				resources[p[2]] = (resources[p[2]] or 0) + p[3]
-			end
-		end
-	end
-	self.resourceCache = resources
-	for i,v in ipairs(self:GetSlots()) do -- Shouldn't work if the holder's input rates are not satisfied
-		local generator = v:GetGenerator()
-		if generator != nil then
-			for k,a in pairs(generator.outputRates) do
-				if generator:TakeResource(k, a) then
-					resources[k] = (resources[k] or 0) + a
-				end
-			end
-		end
-	end
-	self.resourceCache = resources
-	self.runnable = hasResource
-	self.enabled = self.runnable and self.enabled
-	if status != self.enabled then
-		self:UpdateStatus()
-	end
+	return available
 end

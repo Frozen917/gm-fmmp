@@ -111,6 +111,7 @@ end
 function Slot:ExtractDone()
 	self:RemoveNoCollide()
 	self.generator:GetPhysicsObject():SetMass(self.mass)
+	self.generator.holder = nil
 	self:Cancel()
 	self:PlaySound()
 end
