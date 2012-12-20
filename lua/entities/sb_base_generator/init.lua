@@ -5,13 +5,34 @@ include("shared.lua")
 
 function ENT:ServerSideInit()
 	self:SetSkin(1)
-	ResourceDistribution.AddDevice(self)
 	self.resourceCache = {}
 	self.type = "GENERATOR"
 end
 
-function ENT:OnRemove()
-	ResourceDistribution.RemoveDevice(self)
+function ENT:GetNeeds()
+	if not self.enabled then return {} end
+	local needs = {}
+	for resource,amount in pairs(self.inputRates) do
+		needs[resource] = amount
+	end
+	return needs
+end
+
+function ENT:Run(resources)
+	local enough = true
+	for resource,amount in pairs(self.inputRates) do
+		if (resources[resource] or 0) < amount then
+			enough = false
+			break
+		end
+	end
+	if enough then
+		for resource,amount in pairs(self.outputRates) do
+			self.resourceCache[resource] = amount
+		end
+	end
+	self.runnable = enough
+	self.enabled = enough and self.enabled
 end
 
 function ENT:Use()
@@ -24,18 +45,8 @@ function ENT:Use()
 				self.holder = nil
 			end
 		end
-	else
-		self:Toggle()
 	end
 	self.lastuse = CurTime()
-end
-
-function ENT:Toggle()
-	if self.enabled and self:Runnable() then
-		self:SetSkin(2)
-	else
-		self:SetSkin(1)
-	end
 end
 
 function ENT:TakeResource(resource, amount)
@@ -47,13 +58,5 @@ function ENT:TakeResource(resource, amount)
 		local consumed = self.resourceCache[resource]
 		self.resourceCache[resource] = 0
 		return consumed
-	end
-end
-
-function ENT:ProcessResources()
-	if self.enabled then
-		for k,v in pairs(self.outputRates) do
-			self.resourceCache[k] = v
-		end
 	end
 end

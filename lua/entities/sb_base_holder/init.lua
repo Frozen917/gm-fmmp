@@ -8,6 +8,11 @@ ENT.angleSensibility = 15
 function ENT:ServerSideInit()
 	self.slots = {}
 	self.type = "HOLDER"
+	ResourceDistribution.AddDevice(self)
+end
+
+function ENT:OnRemove()
+	ResourceDistribution.RemoveDevice(self)
 end
 
 function ENT:Extract(eGenerator)
@@ -57,6 +62,73 @@ function ENT:Think()
 	end
 	self:NextThink(CurTime())
 	return true
+end
+
+-- TODO: Implement GetNeets() and Run() on generators/containers
+function ENT:ProcessResources()
+	-- Compute what slot need what
+	local needed = {}
+	for index,slot in ipairs(self:GetSlots()) do
+		if slot:GetGenerator() then
+			needed[index] = {}
+			for resource,amount in pairs(slot:GetGenerator():GetNeeds()) do
+				needed[index][resource] = amount
+			end
+		end
+	end
+
+	-- Compute total resources needed and compute splitting coefficients
+	local consume = {}
+	local splitting = {}
+	for _,resources in pairs(needed) do
+		for resource,amount in pairs(resources) do
+			consume[resource] = (consume[resource] or 0) + amount
+			splitting[resource] = (splitting[resource] or 0) + 1
+		end
+	end
+
+	-- Retrieve these resources
+	local cache = {}
+	for _,plug in ipairs(self:GetPlugs()) do
+		if plug:GetOtherPlug() then
+			local connected = plug:GetOtherPlug():GetEntity()
+			for resource,amount in pairs(consume) do
+				if connected:GetType() != "CONTAINER" then
+					cache[resource] = (cache[resource] or 0) + connected:TakeResource(resource, amount - (cache[resource] or 0))
+				end
+			end
+		end
+	end
+
+	-- Now run the generators
+	for index,slot in ipairs(self:GetSlots()) do
+		if slot:GetGenerator() then
+			local resources = {}
+			local runnable = true
+			for resource,amount in pairs(needed[index]) do -- Split the resources between generators
+				if self:GetType() == "GENERATOR" then
+					if cache[resource] >= amount then
+						resources[resource] = amount
+					else
+						runnable = false
+					end
+				elseif self:GetType() == "CONTAINER" then	-- May have some loss here... need a fix!
+					print(resource)
+					print(splitting[resource])
+					resources[resource] = (cache[resource] or 0)/splitting[resource]
+				end
+			end
+			if runnable then	-- Run if it can
+				slot:GetGenerator():Run(resources)
+			end
+			for resource,amount in pairs(resources) do 	-- Consume the resources if the device ran, reduce the splitting
+				if runnable then
+					cache[resource] = (cache[resource] or 0) - amount
+				end
+				splitting[resource] = splitting[resource] - 1
+			end
+		end
+	end
 end
 
 function ENT:TakeResource(resource, amount)

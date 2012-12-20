@@ -71,7 +71,7 @@ function ENT:ProcessResources()
 
 	-- Check if enough resources are available
 	for resource,amount in pairs(self.inputRates) do
-		if resourceCounter[resource] < amount then
+		if (resourceCounter[resource] or 0) < amount then
 			hasResource = false
 		end
 	end

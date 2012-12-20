@@ -4,31 +4,21 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 function ENT:ServerSideInit()
-	ResourceDistribution.AddDevice(self)
 	self.type = "CONTAINER"
 	self:SetSkin(1)
 end
 
-function ENT:OnRemove()
-	ResourceDistribution.RemoveDevice(self)
+function ENT:GetNeeds()
+	local needs = {}
+	for resource,amounts in pairs(self.resources) do
+		needs[resource] = math.min(amounts.maxamount - amounts.amount, amounts.flow)
+	end
+	return needs
 end
 
-function ENT:ProcessResources()
-	if not self.holder then return end
-	local consumed = 0
-	for _,plug in ipairs(self.holder:GetPlugs()) do
-		if plug:IsPlugged() then
-			for resource,amounts in pairs(self.resources) do
-				local currentAmount = amounts.amount
-				local maxAmount = amounts.maxamount
-				local flow = amounts.flow
-				local connected = plug:GetOtherPlug():GetEntity()
-				if connected:GetType() != "CONTAINER"  then
-					consumed = connected:TakeResource(resource, math.min(maxAmount - currentAmount, amounts.flow - consumed)) or 0
-					self.resources[resource].amount = currentAmount + consumed
-				end
-			end
-		end
+function ENT:Run(resources)
+	for resource,amounts in pairs(self.resources) do
+		self.resources[resource].amount = self.resources[resource].amount + math.min(resources[resource] or 0, math.min(amounts.maxamount - amounts.amount, amounts.flow))
 	end
 end
 
