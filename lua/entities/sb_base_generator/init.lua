@@ -7,6 +7,7 @@ function ENT:ServerSideInit()
 	self:SetSkin(1)
 	ResourceDistribution.AddDevice(self)
 	self.resourceCache = {}
+	self.type = "GENERATOR"
 end
 
 function ENT:OnRemove()

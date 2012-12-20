@@ -7,6 +7,7 @@ ENT.angleSensibility = 15
 
 function ENT:ServerSideInit()
 	self.slots = {}
+	self.type = "HOLDER"
 end
 
 function ENT:Extract(eGenerator)
@@ -78,12 +79,17 @@ function ENT:AskResource(resource)
 	return available
 end
 
-function ENT:IsContainer()
-	local isContainer = true
-	for _,slot in ipairs(self:GetSlots()) do
-		if slot:GetGenerator() and not slot:GetGenerator():IsContainer() then
-			isContainer = false
+function ENT:GetType()
+	local type = "HOLDER"
+	for _,slot in pairs(self:GetSlots()) do
+		if slot:GetGenerator() != nil then
+			if type == "HOLDER" then
+				type = slot:GetGenerator():GetType()
+			elseif type != slot:GetGenerator():GetType() then
+				type = "HOLDER"
+				break
+			end
 		end
 	end
-	return isContainer
+	return type
 end
