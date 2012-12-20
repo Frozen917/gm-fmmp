@@ -80,13 +80,13 @@ function ENT:AskResource(resource)
 end
 
 function ENT:GetType()
-	local type = "HOLDER"
+	local type = self.type
 	for _,slot in pairs(self:GetSlots()) do
 		if slot:GetGenerator() != nil then
-			if type == "HOLDER" then
+			if type == self.type then
 				type = slot:GetGenerator():GetType()
 			elseif type != slot:GetGenerator():GetType() then
-				type = "HOLDER"
+				type = self.type
 				break
 			end
 		end
