@@ -113,8 +113,6 @@ function ENT:ProcessResources()
 						runnable = false
 					end
 				elseif self:GetType() == "CONTAINER" then	-- May have some loss here... need a fix!
-					print(resource)
-					print(splitting[resource])
 					resources[resource] = (cache[resource] or 0)/splitting[resource]
 				end
 			end
