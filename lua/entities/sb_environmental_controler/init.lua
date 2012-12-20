@@ -38,10 +38,13 @@ function ENT:Think()
 			self:UpdateStatus()
 		end
 		self.generated:SetPos(self:GetPos())
-	end
-	if self:Runnable() and self.enabled and CurTime() - self.lastSeqReset > 0.5 then
-		self.lastSeqReset = CurTime()
-		self:ResetSequence(self:LookupSequence("on"))
+		if CurTime() - self.lastSeqReset > 0.5 then
+			self.lastSeqReset = CurTime()
+			self:ResetSequence(self:LookupSequence("on"))
+		end
+	elseif self.generated then
+		Universe.RemoveEnvironment(self.generated)
+		self.generated = nil
 	end
 	self:NextThink(CurTime())
 	return true
