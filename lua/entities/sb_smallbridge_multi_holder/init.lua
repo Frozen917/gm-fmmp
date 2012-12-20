@@ -16,6 +16,7 @@ function ENT:SpawnFunction(spawner, trace)
 		undo.SetPlayer(spawner)
 		undo.SetCustomUndoText("Undone SmallBridge Holder")
 	undo.Finish()
+	self.type = "CONTAINER"
 end
 
 function ENT:ServerSideInit()
