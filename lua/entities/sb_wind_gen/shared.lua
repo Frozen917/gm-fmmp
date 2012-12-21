@@ -18,5 +18,6 @@ function ENT:Initialize()
 	{
 		energy = 100
 	}
+	self:SetDeviceName("Small Wind Turbine")
 end
 

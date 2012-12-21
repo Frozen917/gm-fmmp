@@ -13,4 +13,5 @@ function ENT:Initialize()
 	if SERVER then
 		self:ServerSideInit()
 	end
+	self:SetDeviceName("SmallBridge 2x Large Holder - SW")
 end

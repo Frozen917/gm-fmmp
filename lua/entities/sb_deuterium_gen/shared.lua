@@ -22,4 +22,5 @@ function ENT:Initialize()
 	{
 		energy = 500
 	}
+	self:SetDeviceName("Large Deuterium Generator")
 end

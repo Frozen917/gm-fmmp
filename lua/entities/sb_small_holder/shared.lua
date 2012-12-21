@@ -14,4 +14,5 @@ function ENT:Initialize()
 	if SERVER then
 		self:ServerSideInit()
 	end
+	self:SetDeviceName("Generic 1x Small Holder")
 end

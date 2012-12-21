@@ -14,6 +14,7 @@ function ENT:Initialize(child)
 	if SERVER then
 		self.ServerSideInit(child)
 	end
+	child.name = ""
 end
 
 function ENT:Runnable()
@@ -21,4 +22,12 @@ function ENT:Runnable()
 end
 
 function ENT:Running()
+end
+
+function ENT:GetDeviceName()
+	return self.name
+end
+
+function ENT:SetDeviceName(name)
+	self.name = name or ""
 end
