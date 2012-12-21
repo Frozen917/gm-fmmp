@@ -64,7 +64,6 @@ function ENT:Think()
 	return true
 end
 
--- TODO: Implement GetNeets() and Run() on generators/containers
 function ENT:ProcessResources()
 	-- Compute what slot need what
 	local needed = {}
@@ -129,6 +128,7 @@ function ENT:ProcessResources()
 	end
 end
 
+-- TODO: Limitation with flow! Now the limitation is for 1 request
 function ENT:TakeResource(resource, amount)
 	-- Sort to equilibrate resources in the slots
 	local sorted = {}
