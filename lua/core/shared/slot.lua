@@ -86,7 +86,7 @@ function Slot:Grab(eGenerator)
 	self.progression = 0
 	self.direction = 1
 	constraint.NoCollide(self.entity, self.generator, 0, 0)
-	self.offset = (self.generator:WorldToLocal(self.generator:GetPos()) - (self.generator:OBBCenter() - Vector(0, 0, 0.5)*(self.generator:OBBMaxs() - self.generator:OBBMins()))).z
+	self.offset = (self.generator:WorldToLocal(self.generator:GetPos()) - (self.generator:OBBCenter() - Vector(0, 0, 0.5)*(self.generator:OBBMaxs() - self.generator:OBBMins()) - Vector(0, 0, self.generator.heightOffset))).z
 	self.mass = self.generator:GetPhysicsObject():GetMass()
 	self.generator:GetPhysicsObject():SetMass(1)
 	self:PlaySound()
