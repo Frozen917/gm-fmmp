@@ -3,7 +3,7 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
-ENT.angleSensibility = 15
+ENT.angleSensibility = 25
 
 function ENT:ServerSideInit()
 	self.slots = {}
