@@ -26,3 +26,16 @@ end
 function ENT:SetHolder(eHolder)
 	self.holder = eHolder
 end
+
+function ENT:GetCachedResource(resource)
+	if self:GetType() == "GENERATOR" then
+		return self.outputRates[resource] or 0
+	elseif self:GetType() == "CONTAINER" then
+		local cache = self.resources[resource]
+		if cache then
+			return cache.amount
+		else
+			return 0
+		end
+	end
+end

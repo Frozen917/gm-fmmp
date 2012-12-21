@@ -130,8 +130,29 @@ function ENT:ProcessResources()
 end
 
 function ENT:TakeResource(resource, amount)
-	local taken = 0
+	-- Sort to equilibrate resources in the slots
+	local sorted = {}
 	for _,slot in ipairs(self:GetSlots()) do
+		local generator = slot:GetGenerator()
+		if generator then
+			table.insert(sorted, 1, slot)
+			local position = 1
+			local quantity = generator:GetCachedResource(resource)
+			for index,item in ipairs(sorted) do
+				if quantity < item:GetGenerator():GetCachedResource(resource) then
+					position = index
+				end
+			end
+			if position != 1 then
+				table.remove(sorted, 1)
+				table.insert(sorted, position, slot)
+			end
+		end
+	end
+
+	-- Take and distribute the resources
+	local taken = 0
+	for _,slot in ipairs(sorted) do
 		if not slot:IsFree() then
 			taken = taken + slot:GetGenerator():TakeResource(resource, math.max(0, amount - taken))
 		end
