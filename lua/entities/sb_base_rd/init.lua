@@ -19,6 +19,10 @@ function ENT:AskResource(resource)
 	return 0
 end
 
+function ENT:GetCachedResource(resource)
+	return self:AskResource(resource)
+end
+
 function ENT:GetType()
 	return self.type or "UNKNOWN"
 end

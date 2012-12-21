@@ -34,17 +34,13 @@ end
 
 function ENT:Think()
 	if self:Runnable() and self.enabled then
-		if not self.generated then
-			self:UpdateStatus()
-		end
 		self.generated:SetPos(self:GetPos())
 		if CurTime() - self.lastSeqReset > 0.5 then
 			self.lastSeqReset = CurTime()
 			self:ResetSequence(self:LookupSequence("on"))
 		end
 	elseif self.generated then
-		Universe.RemoveEnvironment(self.generated)
-		self.generated = nil
+		self:UpdateStatus()
 	end
 	self:NextThink(CurTime())
 	return true
@@ -96,8 +92,12 @@ function ENT:UpdateStatus()
 	if self:Runnable() and self.enabled then
 		self.generated = Universe.CreateEnvironment(nil, 500, self:GetPos(), {oxygen=100}, {ents_gravity = -1, players_gravity = 1, wind = -1, noclip = -1})
 		self.sound:Play()
+		self.lastSeqReset = CurTime()
+		self:ResetSequence(self:LookupSequence("on"))
 	else
 		Universe.RemoveEnvironment(self.generated)
+		self.generated = nil
+		self.lastSeqReset = 0
 		self.sound:Stop()
 		self:ResetSequence(self:LookupSequence("idle"))
 	end

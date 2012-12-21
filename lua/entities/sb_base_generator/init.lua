@@ -60,3 +60,14 @@ function ENT:TakeResource(resource, amount)
 		return consumed
 	end
 end
+
+function ENT:AskResource(resource)
+	if not self.enabled or not self.resourceCache[resource] then return 0 end
+	return self.resourceCache[resource]
+end
+
+function ENT:GetCachedResource(resource)
+	if self:GetType() == "GENERATOR" then
+		return self.outputRates[resource] or 0
+	end
+end
