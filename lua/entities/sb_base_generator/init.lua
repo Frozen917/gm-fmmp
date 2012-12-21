@@ -19,6 +19,7 @@ function ENT:GetNeeds()
 end
 
 function ENT:Run(resources)
+	self:BroadcastResources()
 	local enough = true
 	for resource,amount in pairs(self.inputRates) do
 		if (resources[resource] or 0) < amount then
@@ -69,5 +70,11 @@ end
 function ENT:GetCachedResource(resource)
 	if self:GetType() == "GENERATOR" then
 		return self.outputRates[resource] or 0
+	end
+end
+
+function ENT:BroadcastResources()
+	for resource,amount in pairs(self.outputRates) do
+		self:SetNetworkedInt(resource, amount - (self.resourceCache[resource] or 0))
 	end
 end
