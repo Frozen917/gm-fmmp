@@ -23,41 +23,43 @@ hook.Add("PlayerNoClip", "DisableNoClipInSpace", function(player) return player:
 hook.Add("Move", "PlayerCantMoveInSpace", playerCantMoveInSpace)
 hook.Add("PlayerEnteredNewEnvironment", "DisableNoClipInSpaceWhenEnteringSpace", disableNoClipWhenEnteringSpace)
 
+if SERVER then
+	local playerToDamage = 1	-- Next player to take damage, don't modify
+	local damagePerTick = 20
+	local tickPerSecond = 3
+	local damageinfo = DamageInfo()
+	damageinfo:SetDamageType(DMG_GENERIC)
+	damageinfo:SetDamage(damagePerTick)
 
-local playerToDamage = 1	-- Next player to take damage, don't modify
-local damagePerTick = 20
-local tickPerSecond = 3
-
-
-local function damagePlayerInSpace(player)
-	if not player:GetEnvironment():IsViable() and not player:IsGod() and player:Alive() then
-		if player:Health() <= damagePerTick then
-			player:Kill()
-		else
-			player:SetHealth(player:Health()-damagePerTick)
+	local function damagePlayerInSpace(ply)
+		if not ply:GetEnvironment():IsViable() and not ply:IsGod() and ply:Alive() then
+			damageinfo:SetAttacker(game.GetWorld())
+			damageinfo:SetDamagePosition(ply:GetPos())
+			damageinfo:SetInflictor(game.GetWorld())
+			ply:TakeDamageInfo(damageinfo)
 		end
 	end
-end
 
-local function damagePlayerInSpaceLoop()
-	if GetConVar("sbox_godmode"):GetBool() then return end
-	local playersCount = #player.GetAll()
-	if playersCount > 0 then
-		playerToDamage = (playerToDamage)%(playersCount)+1
-		damagePlayerInSpace(player.GetAll()[playerToDamage])
+	local function damagePlayerInSpaceLoop()
+		if GetConVar("sbox_godmode"):GetBool() then return end
+		local playersCount = #player.GetAll()
+		if playersCount > 0 then
+			playerToDamage = (playerToDamage)%(playersCount)+1
+			damagePlayerInSpace(player.GetAll()[playerToDamage])
+		end
 	end
-end
 
-local function adjustPlayerSpaceDamageLoop()
-	local playersCount = #player.GetAll()
-	if playersCount == 1 then
-		timer.Create("PlayerInSpaceDamage", 1/tickPerSecond, 0, damagePlayerInSpaceLoop)
-	elseif playersCount > 1 then
-		timer.Adjust("PlayerInSpaceDamage", 1/(tickPerSecond*playersCount), 0, damagePlayerInSpaceLoop)
-	else
-		timer.Stop("PlayerInSpaceDamage")
+	local function adjustPlayerSpaceDamageLoop()
+		local playersCount = #player.GetAll()
+		if playersCount == 1 then
+			timer.Create("PlayerInSpaceDamage", 1/tickPerSecond, 0, damagePlayerInSpaceLoop)
+		elseif playersCount > 1 then
+			timer.Adjust("PlayerInSpaceDamage", 1/(tickPerSecond*playersCount), 0, damagePlayerInSpaceLoop)
+		else
+			timer.Stop("PlayerInSpaceDamage")
+		end
 	end
-end
 
-hook.Add("PlayerInitialSpawn", "AdjustPlayerSpaceDamageLoop", adjustPlayerSpaceDamageLoop)
-hook.Add("PlayerDisconnected", "AdjustPlayerSpaceDamageLoop", adjustPlayerSpaceDamageLoop)
+	hook.Add("PlayerInitialSpawn", "AdjustPlayerSpaceDamageLoop", adjustPlayerSpaceDamageLoop)
+	hook.Add("PlayerDisconnected", "AdjustPlayerSpaceDamageLoop", adjustPlayerSpaceDamageLoop)
+end
