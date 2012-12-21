@@ -13,7 +13,7 @@ function ENT:GetNeeds()
 	for resource,amounts in pairs(self.resources) do
 		local delta = amounts.maxamount - amounts.amount
 		if delta > 0 then
-			needs[resource] = math.min(, amounts.flow)
+			needs[resource] = math.min(delta, amounts.flow)
 		end
 	end
 	return needs
@@ -24,21 +24,24 @@ function ENT:Run(resources)
 		self.resources[resource].amount = self.resources[resource].amount + math.min(resources[resource] or 0, math.min(amounts.maxamount - amounts.amount, amounts.flow))
 	end
 	self:UpdateSkin()
+	self:BroadcastResources()
 end
 
 function ENT:TakeResource(resource, amount)
 	if not self.resources[resource] then return 0 end
 	local possessed = self.resources[resource].amount or 0
+	local consumed = 0
 	amount = math.min(amount, self.resources[resource].flow or 0)
 	if possessed < amount then
 		self.resources[resource].amount = 0
-		self:UpdateSkin()
-		return possessed
+		consumed = possessed
 	else
 		self.resources[resource].amount = possessed - amount
-		self:UpdateSkin()
-		return amount
+		consumed = amount
 	end
+	self:UpdateSkin()
+	self:BroadcastResources()
+	return consumed
 end
 
 function ENT:AskResource(resource)
@@ -67,5 +70,11 @@ function ENT:UpdateSkin()
 		self:SetSkin(2)
 	elseif not charged and skin == 2 then
 		self:SetSkin(1)
+	end
+end
+
+function ENT:BroadcastResources()
+	for resource,amounts in pairs(self.resources) do
+		self:SetNetworkedInt(resource, amounts.amount)
 	end
 end

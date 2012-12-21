@@ -52,7 +52,6 @@ function ENT:Use()
 end
 
 function ENT:ProcessResources()
-	if not self.enabled then return end
 	local hasResource = true
 	local resourceCounter = {}
 
@@ -73,7 +72,7 @@ function ENT:ProcessResources()
 	end
 
 	-- Consume resources
-	if hasResource then
+	if hasResource and self.enabled and self.runnable then
 		local resourceDone = {}
 		for _,plug in ipairs(self:GetPlugs()) do
 			if plug:IsPlugged() then
