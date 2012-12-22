@@ -51,3 +51,5 @@ function ENT:Think()
 	return true
 end
 
+function ENT:Use()
+end

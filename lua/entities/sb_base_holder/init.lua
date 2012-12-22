@@ -89,7 +89,7 @@ function ENT:ProcessResources()
 	-- Retrieve these resources
 	local cache = {}
 	for _,plug in ipairs(self:GetPlugs()) do
-		if plug:GetOtherPlug() then
+		if plug:IsPlugged() then
 			local connected = plug:GetOtherPlug():GetEntity()
 			for resource,amount in pairs(consume) do
 				if connected:GetType() != "CONTAINER" then
@@ -105,14 +105,19 @@ function ENT:ProcessResources()
 			local resources = {}
 			local runnable = true
 			for resource,amount in pairs(needed[index]) do -- Split the resources between generators
-				if self:GetType() == "GENERATOR" then
+				print(slot:GetGenerator():GetType())
+				PrintTable(cache)
+				PrintTable(consume)
+				if slot:GetGenerator():GetType() == "GENERATOR" then
 					if cache[resource] >= amount then
 						resources[resource] = amount
 					else
 						runnable = false
 					end
-				elseif self:GetType() == "CONTAINER" then	-- May have some loss here... need a fix!
+				elseif slot:GetGenerator():GetType() == "CONTAINER" then	-- May have some loss here... need a fix!
 					resources[resource] = (cache[resource] or 0)/splitting[resource]
+				else
+					runnable = false
 				end
 			end
 			if runnable then	-- Run if it can
@@ -173,7 +178,7 @@ end
 function ENT:GetType()
 	local type = self.type
 	for _,slot in pairs(self:GetSlots()) do
-		if slot:GetGenerator() != nil then
+		if slot:GetGenerator() then
 			if type == self.type then
 				type = slot:GetGenerator():GetType()
 			elseif type != slot:GetGenerator():GetType() then
