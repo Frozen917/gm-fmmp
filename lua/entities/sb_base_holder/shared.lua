@@ -16,5 +16,4 @@ function ENT:Initialize(child)
 	if SERVER then
 		self.ServerSideInit(child)
 	end
-	child.holdAngle = Angle(0, 0, 0)
 end

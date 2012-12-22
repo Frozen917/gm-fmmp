@@ -30,6 +30,7 @@ function ENT:ServerSideInit()
 		Vector(0, 0, 39.76),
 		Vector(0, 0, 1),
 		15,
-		0.4
+		0.4,
+		90
 	))
 end

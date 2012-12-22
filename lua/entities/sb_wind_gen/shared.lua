@@ -13,6 +13,7 @@ function ENT:Initialize()
 		self:ServerSideInit()
 	end
 	self.slotSize = 1
+	self.holdAngle = Angle(90, 0, 0)
 	self.outputRates = 
 	{
 		energy = 100

@@ -1,7 +1,7 @@
 Slot = {}
 Slot.__index = Slot
 
-function Slot.New(eParent, nSize, vGrabPos, vNormal, nRadius, nSpeed)
+function Slot.New(eParent, nSize, vGrabPos, vNormal, nRadius, nSpeed, nRoll)
 	local slot = {}
 	setmetatable(slot, Slot)
 	slot.entity = eParent
@@ -17,6 +17,7 @@ function Slot.New(eParent, nSize, vGrabPos, vNormal, nRadius, nSpeed)
 	slot.weld = nil
 	slot.nocollide = nil
 	slot.offset = 0
+	slot.roll = nRoll
 	return slot
 end
 
@@ -134,7 +135,9 @@ end
 function Slot:DoWork()
 	if self.generator and self.generator:IsValid() then
 		self.generator:GetPhysicsObject():EnableMotion(false)
-		self.generator:SetAngles(self.entity:LocalToWorldAngles(self.normal:Angle() + self.entity.holdAngle + self.generator:GetHoldAngle()))
+		local angle = self.normal:Angle() + self.generator:GetHoldAngle()
+		angle:RotateAroundAxis(self.normal, self.roll)
+		self.generator:SetAngles(self.entity:LocalToWorldAngles(angle))
 		self.progression = self.progression + self.speed*self.direction
 		self.generator:SetPos(self.entity:LocalToWorld(	self.position						-- slot position
 														+ self.normal*self.offset			-- generator offset

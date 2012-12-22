@@ -31,7 +31,8 @@ function ENT:ServerSideInit()
 		Vector(45.2, -56.3, -10.2),
 		Vector(0, -1, 0),
 		40,
-		0.4
+		0.4,
+		90
 	))
 	table.insert(self.slots, Slot.New(
 		self,
@@ -39,6 +40,7 @@ function ENT:ServerSideInit()
 		Vector(-45.2, -56.3, -10.2),
 		Vector(0, -1, 0),
 		40,
-		0.4
+		0.4,
+		90
 	))
 end
