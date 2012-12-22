@@ -25,6 +25,7 @@ if CLIENT then
 end
 
 RegisterContainer("Small Energy Cell", "sb_small_energycell", "models/mandrac/lgm/energycell_s.mdl")
+RegisterContainer("Small Oxygen Tank", "sb_small_oxygentank", "models/mandrac/lgm/gascan.mdl")
 
 
 

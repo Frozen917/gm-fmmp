@@ -1,7 +1,10 @@
 Todo:
 	- Send entity animations on connect
 	- Fix pipe undo
-	- Fix generators not rotating smoothly when entering holders
 	- Add high priority hooks
 	- Add generic ServerSideInit for every entities!
 	- self.environments = Universe.GetEntityEnvironments(self) should be added for every entities in ServerSideInit
+	- fancy holder animations :D
+	- hubs and control devices for resource flow
+	- global device registration
+	- API :(
