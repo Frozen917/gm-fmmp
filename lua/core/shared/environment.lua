@@ -47,6 +47,10 @@ function Environment:IsViable()
 	return self:GetResourcePercentage("oxygen") > 20 --and self:GetTemperature() > 268.15 FIX MEH
 end
 
+function Environment:GetVolume()
+	return self.volume
+end
+
 function Environment:GetResource(resource)
 	
 	return self.resources[resource] or 0

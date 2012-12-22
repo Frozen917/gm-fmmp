@@ -74,10 +74,23 @@ function ENT:ProcessResources()
 	-- Consume resources
 	if hasResource and self.enabled and self.runnable then
 		local resourceDone = {}
-		for _,plug in ipairs(self:GetPlugs()) do
+			for _,plug in ipairs(self:GetPlugs()) do
 			if plug:IsPlugged() then
 				for resource,amount in pairs(self.inputRates) do
 					resourceDone[resource] = plug:GetOtherPlug():GetEntity():TakeResource(resource, math.max(0, amount - (resourceDone[resource] or 0)))
+				end
+			end
+		end
+
+		-- Take as mush oxygen as possible
+		local goal = self.generated:GetVolume()*0.21 - self.generated:GetResource("oxygen")
+		local oxygen = 0
+		if goal > 0 then
+			for _,plug in ipairs(self:GetPlugs()) do
+				if plug:IsPlugged() then
+					local taken = plug:GetOtherPlug():GetEntity():TakeResource("oxygen", math.max(0, goal-oxygen))
+					oxygen = oxygen + taken
+					self.generated:Fill("oxygen", taken)
 				end
 			end
 		end
@@ -89,7 +102,7 @@ end
 
 function ENT:UpdateStatus()
 	if self:Runnable() and self.enabled then
-		self.generated = Universe.CreateEnvironment(nil, 500, self:GetPos(), {oxygen=100}, {ents_gravity = -1, players_gravity = 1, wind = -1, noclip = -1})
+		self.generated = Universe.CreateEnvironment(nil, 500, self:GetPos(), {oxygen=0}, {ents_gravity = -1, players_gravity = 1, wind = -1, noclip = -1})
 		self.sound:Play()
 		self.lastSeqReset = CurTime()
 		self:ResetSequence(self:LookupSequence("on"))
