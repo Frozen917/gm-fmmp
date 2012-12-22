@@ -14,6 +14,5 @@ function ENT:Initialize()
 	self:SetDeviceName("Small Oxygen Tank")
 	self.slotSize = 1
 	self.heightOffset = 1.6531505584715
-	self.holdAngle = Angle(90, 0, 0)
 	self.resources["oxygen"] = { amount = 0, maxamount = 60000, flow = 100 }
 end

@@ -14,7 +14,7 @@ function ENT:Initialize(child)
 	self.BaseClass:Initialize(child)
 	child.slotSize = -1
 	child.heightOffset = 0
-	child.holdAngle = Angle()
+	child.holdAngle = Angle(0, 0, 0)
 	if SERVER then
 		self.ServerSideInit(child)
 	end

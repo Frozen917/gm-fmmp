@@ -12,7 +12,6 @@ function ENT:Initialize()
 		self:ServerSideInit()
 	end
 	self.slotSize = 1
-	self.holdAngle = Angle(90, 0, 0)
 	self.resources["energy"] = { amount = 0, maxamount = 60000, flow = 100 }
 	self:SetDeviceName("Small Energy Cell")
 end

@@ -134,7 +134,7 @@ end
 function Slot:DoWork()
 	if self.generator and self.generator:IsValid() then
 		self.generator:GetPhysicsObject():EnableMotion(false)
-		self.generator:SetAngles(self.entity:LocalToWorldAngles(self.normal:Angle() + self.generator:GetHoldAngle()))
+		self.generator:SetAngles(self.entity:LocalToWorldAngles(self.normal:Angle() + self.entity.holdAngle + self.generator:GetHoldAngle()))
 		self.progression = self.progression + self.speed*self.direction
 		self.generator:SetPos(self.entity:LocalToWorld(	self.position						-- slot position
 														+ self.normal*self.offset			-- generator offset
