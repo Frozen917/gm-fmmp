@@ -36,20 +36,6 @@ function ENT:Run(resources)
 	self.enabled = enough and self.enabled
 end
 
-function ENT:Use()
-	self.enabled = not self.enabled
-	if CurTime() - self.lastuse < 0.5 then
-		if self.holder != nil then
-			if self.holder:IsValid() then
-				self.holder:Extract(self)
-			else
-				self.holder = nil
-			end
-		end
-	end
-	self.lastuse = CurTime()
-end
-
 function ENT:TakeResource(resource, amount)
 	if not self.enabled or not self.resourceCache[resource] then return 0 end
 	if self.resourceCache[resource] > amount then
