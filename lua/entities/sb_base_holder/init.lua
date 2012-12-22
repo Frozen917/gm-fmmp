@@ -105,9 +105,6 @@ function ENT:ProcessResources()
 			local resources = {}
 			local runnable = true
 			for resource,amount in pairs(needed[index]) do -- Split the resources between generators
-				print(slot:GetGenerator():GetType())
-				PrintTable(cache)
-				PrintTable(consume)
 				if slot:GetGenerator():GetType() == "GENERATOR" then
 					if cache[resource] >= amount then
 						resources[resource] = amount
