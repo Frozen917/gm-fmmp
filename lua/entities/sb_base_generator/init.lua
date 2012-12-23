@@ -19,7 +19,6 @@ function ENT:GetNeeds()
 end
 
 function ENT:Run(resources)
-	self:BroadcastResources()
 	local enough = true
 	for resource,amount in pairs(self.inputRates) do
 		if (resources[resource] or 0) < amount then
@@ -34,6 +33,7 @@ function ENT:Run(resources)
 	end
 	self.runnable = enough
 	self.enabled = enough and self.enabled
+	self:BroadcastResources()
 end
 
 function ENT:TakeResource(resource, amount)
@@ -61,6 +61,10 @@ end
 
 function ENT:BroadcastResources()
 	for resource,amount in pairs(self.outputRates) do
-		self:SetNetworkedInt(resource, amount - (self.resourceCache[resource] or 0))
+		if self.runnable and self.enabled and self.holder != nil then
+			self:SetNetworkedInt(resource, amount - (self.resourceCache[resource] or 0))
+		else
+			self:SetNetworkedInt(resource, 0)
+		end
 	end
 end
