@@ -7,6 +7,16 @@ function ENT:ServerSideInit()
 	self:SetSkin(1)
 	self.resourceCache = {}
 	self.type = "GENERATOR"
+	self.outputCounter = {}
+	ResourceDistribution.AddDevice(self)
+end
+
+function ENT:OnRemove()
+	ResourceDistribution.RemoveDevice(self)
+end
+
+function ENT:ProcessResources()
+	self:BroadcastResources()
 end
 
 function ENT:GetNeeds()
@@ -33,17 +43,18 @@ function ENT:Run(resources)
 	end
 	self.runnable = enough
 	self.enabled = enough and self.enabled
-	self:BroadcastResources()
 end
 
 function ENT:TakeResource(resource, amount)
 	if not self.enabled or not self.resourceCache[resource] then return 0 end
 	if self.resourceCache[resource] > amount then
 		self.resourceCache[resource] = self.resourceCache[resource] - amount
+		self.outputCounter[resource] = (self.outputCounter[resource] or 0) + amount
 		return amount
 	else
 		local consumed = self.resourceCache[resource]
 		self.resourceCache[resource] = 0
+		self.outputCounter[resource] = (self.outputCounter[resource] or 0) + consumed
 		return consumed
 	end
 end
@@ -61,10 +72,7 @@ end
 
 function ENT:BroadcastResources()
 	for resource,amount in pairs(self.outputRates) do
-		if self.runnable and self.enabled and self.holder != nil then
-			self:SetNetworkedInt(resource, amount - (self.resourceCache[resource] or 0))
-		else
-			self:SetNetworkedInt(resource, 0)
-		end
+		self:SetNetworkedInt(resource, self.outputCounter[resource] or 0)
 	end
+	self.outputCounter = {}
 end

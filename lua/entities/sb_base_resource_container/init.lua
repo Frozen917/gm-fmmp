@@ -58,6 +58,12 @@ function ENT:GetCachedResource(resource)
 	end
 end
 
+function ENT:BroadcastResources()
+	for resource,amounts in pairs(self.resources) do
+		self:SetNetworkedInt(resource, amounts.amount)
+	end
+end
+
 function ENT:UpdateSkin()
 	local skin = self:GetSkin()
 	local charged = false
@@ -70,11 +76,5 @@ function ENT:UpdateSkin()
 		self:SetSkin(2)
 	elseif not charged and skin == 2 then
 		self:SetSkin(1)
-	end
-end
-
-function ENT:BroadcastResources()
-	for resource,amounts in pairs(self.resources) do
-		self:SetNetworkedInt(resource, amounts.amount)
 	end
 end
