@@ -10,7 +10,6 @@ Core.blacklist = {
 	"predicted_viewmodel",
 	"scene_manager",
 	"sb_small_holder",
-	"sb_wind_gen",
 	"logic_collision_pair",
 	"gmod_gamerules",
 	"env_laserdot",
