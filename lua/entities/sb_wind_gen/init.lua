@@ -38,11 +38,11 @@ function ENT:Think()
 		if self:GetEnvCharacteristic("wind") > 0 then
 			if not self.sound:IsPlaying() then self.sound:Play() end
 			sequence = "on"
-			self.runnable = true
+			self.enabled = true
 		else
 			if self.sound:IsPlaying() then self.sound:Stop() end
 			sequence = "idle"
-			self.runnable = false
+			self.enabled = false
 		end
 		self:ResetSequence(self:LookupSequence(sequence))
 		self:SetPlaybackRate(1)
