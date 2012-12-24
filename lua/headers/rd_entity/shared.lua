@@ -1,4 +1,4 @@
-ENT.implementation = { "fmp_base" }
+ENT.implementation = { "fmp_entity" }
 include("headers/headers.lua")
 
 ENT.addInitFunction(function(self)
