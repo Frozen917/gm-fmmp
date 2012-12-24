@@ -15,6 +15,11 @@ end
 
 function ENT:ProcessResources()
 	self:BroadcastResources()
+	self:UpdateSkin()
+	if not self.holder then
+		self.runnable = false
+		self.enabled = false
+	end
 end
 
 function ENT:GetNeeds()
@@ -41,6 +46,7 @@ function ENT:Run(resources)
 	end
 	self.runnable = enough
 	self.enabled = enough and self.enabled
+	self:UpdateSkin()
 end
 
 function ENT:TakeResource(resource, amount)
@@ -73,4 +79,12 @@ function ENT:BroadcastResources()
 		self:SetNetworkedInt(resource, self.outputCounter[resource] or 0)
 	end
 	self.outputCounter = {}
+end
+
+function ENT:UpdateSkin()
+	if self.runnable and self.enabled and self:GetSkin() == 1 then
+		self:SetSkin(2)
+	elseif (not self.runnable or not self.holder) and self:GetSkin() == 2 then
+		self:SetSkin(1)
+	end
 end
