@@ -1,12 +1,7 @@
-AddCSLuaFile("cl_init.lua")
-AddCSLuaFile("shared.lua")
-
-include("shared.lua")
-
-function ENT:ServerSideInit()
+ENT.addInitFunction(function(self)
 	self.type = "CONTAINER"
 	self:SetSkin(1)
-end
+end)
 
 function ENT:GetNeeds()
 	local needs = {}

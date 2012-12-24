@@ -3,6 +3,16 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
+ENT.addInitFunction(function(self)
+	self:SetModel("models/mandrac/lgm/lifesupport_l.mdl")
+	self:PhysicsInit(SOLID_VPHYSICS)
+	self:SetMoveType(MOVETYPE_VPHYSICS)
+	self:SetSolid(SOLID_VPHYSICS)
+	self.sound = CreateSound(self, Sound("ambient/underground.wav"))
+	self.lastSeqReset = CurTime()
+	ResourceDistribution.AddDevice(self)
+end)
+
 function ENT:SpawnFunction(spawner, trace)
 	local entity = ents.Create("sb_environmental_controler")
 	entity:SetPos(trace.HitPos + trace.HitNormal*56) 
@@ -13,16 +23,6 @@ function ENT:SpawnFunction(spawner, trace)
 		undo.SetPlayer(spawner)
 		undo.SetCustomUndoText("Undone Environmental Controler")
 	undo.Finish()
-end
-
-function ENT:ServerSideInit()
-	self:SetModel("models/mandrac/lgm/lifesupport_l.mdl")
-	self:PhysicsInit(SOLID_VPHYSICS)
-	self:SetMoveType(MOVETYPE_VPHYSICS)
-	self:SetSolid(SOLID_VPHYSICS)
-	self.sound = CreateSound(self, Sound("ambient/underground.wav"))
-	self.lastSeqReset = CurTime()
-	ResourceDistribution.AddDevice(self)
 end
 
 function ENT:OnRemove()

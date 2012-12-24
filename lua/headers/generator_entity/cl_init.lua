@@ -1,6 +1,4 @@
-include("shared.lua")
-
---[[function ENT:Draw()
+function ENT:Draw()
 	self:DrawModel()
 	local trace = LocalPlayer():GetEyeTrace()
 	if trace.Entity == self and trace.Fraction * 16384 < 256 then
@@ -11,4 +9,4 @@ include("shared.lua")
 		end
 		AddWorldTip(nil,txt,nil,self:GetPos(),nil)
 	end
-end]]
+end

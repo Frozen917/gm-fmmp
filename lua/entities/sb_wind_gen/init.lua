@@ -3,7 +3,7 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
-function ENT:ServerSideInit()
+ENT.addInitFunction(function(self)
 	self:SetModel("models/mandrac/lgm/wind_turbine.mdl")
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
@@ -12,7 +12,7 @@ function ENT:ServerSideInit()
 	self.environments = Universe.GetEntityEnvironments(self)
 	self.sound = CreateSound(self, "ambient/machines/machine3.wav")
 	self.enabled = true
-end
+end)
 
 function ENT:SpawnFunction(spawner, trace)
 	local entity = ents.Create("sb_wind_gen")

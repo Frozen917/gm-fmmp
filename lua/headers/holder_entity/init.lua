@@ -1,15 +1,9 @@
-AddCSLuaFile("cl_init.lua")
-AddCSLuaFile("shared.lua")
-
-include("shared.lua")
-
-ENT.angleSensibility = 25
-
-function ENT:ServerSideInit()
+ENT.addInitFunction(function(self)
 	self.slots = {}
 	self.type = "HOLDER"
+	self.angleSensibility = 25
 	ResourceDistribution.AddDevice(self)
-end
+end)
 
 function ENT:OnRemove()
 	ResourceDistribution.RemoveDevice(self)

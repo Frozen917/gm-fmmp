@@ -1,18 +1,9 @@
-ENT.Type 			= "anim"
-ENT.Base 			= "sb_base_rd"
-ENT.Category 		= "FMP GameMode"
+ENT.implementation = { "fmp_base", "rd_entity" }
+include("headers/headers.lua")
 
-ENT.Spawnable 		= false
-ENT.AdminSpawnable	= false
-
-
-function ENT:Initialize(child)
-	self.BaseClass:Initialize(child)
-	child.plugs = {}
-	if SERVER then
-		self.ServerSideInit(child)
-	end
-end
+ENT.addInitFunction(function(self)
+	self.plugs = {}
+end)
 
 function ENT:GetFreePlug(vClosest)	-- Local to entity
 	local plug = nil

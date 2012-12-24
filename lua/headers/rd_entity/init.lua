@@ -1,11 +1,6 @@
-AddCSLuaFile("cl_init.lua")
-AddCSLuaFile("shared.lua")
-
-include("shared.lua")
-
-function ENT:ServerSideInit()
+ENT.addInitFunction(function(self)
 	self:SetUseType(SIMPLE_USE)
-end
+end)
 
 function ENT:Use()
 	self.enabled = not self.enabled

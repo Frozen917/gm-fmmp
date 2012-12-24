@@ -1,16 +1,14 @@
 ENT.Type 			= "anim"
-ENT.Base 			= "sb_base_generator"
+ENT.Base 			= "base_gmodentity"
 ENT.Category 		= "FMP GameMode"
 
 ENT.Spawnable 		= true
 ENT.AdminSpawnable	= true
 
+ENT.implementation = { "generator_entity" }
+include("headers/headers.lua")
 
-function ENT:Initialize()
-	self.BaseClass:Initialize(self)
-	if SERVER then
-		self:ServerSideInit()
-	end
+ENT.addInitFunction(function(self)
 	self.slotSize = 3
 	self.holdAngle = Angle(90, -90, -90)
 	self.inputRates = 
@@ -23,4 +21,4 @@ function ENT:Initialize()
 		energy = 500
 	}
 	self:SetDeviceName("Large Deuterium Generator")
-end
+end)

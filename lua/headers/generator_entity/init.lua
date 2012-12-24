@@ -1,15 +1,10 @@
-AddCSLuaFile("cl_init.lua")
-AddCSLuaFile("shared.lua")
-
-include("shared.lua")
-
-function ENT:ServerSideInit()
+ENT.addInitFunction(function(self)
 	self:SetSkin(1)
 	self.resourceCache = {}
 	self.type = "GENERATOR"
 	self.outputCounter = {}
 	ResourceDistribution.AddDevice(self)
-end
+end)
 
 function ENT:OnRemove()
 	ResourceDistribution.RemoveDevice(self)

@@ -3,13 +3,12 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
-
-function ENT:ServerSideInit()
+ENT.addInitFunction(function(self)
 	self:SetModel("models/mandrac/lgm/deuterium_gen.mdl")
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
-end
+end)
 
 function ENT:SpawnFunction(spawner, trace)
 	local entity = ents.Create("sb_deuterium_gen")

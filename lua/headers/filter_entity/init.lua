@@ -1,12 +1,7 @@
-AddCSLuaFile("cl_init.lua")
-AddCSLuaFile("shared.lua")
-
-include("shared.lua")
-
-function ENT:ServerSideInit()
+ENT.addInitFunction(function(self)
 	self:SetSkin(1)
 	self.type = "FILTER"
-end
+end)
 
 function ENT:Use()
 	self.enabled = not self.enabled

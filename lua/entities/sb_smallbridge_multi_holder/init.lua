@@ -3,23 +3,9 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
-
 local angleTolerance = 30
 
-function ENT:SpawnFunction(spawner, trace)
-	local entity = ents.Create("sb_smallbridge_multi_holder")
-	entity:SetPos(trace.HitPos + trace.HitNormal*56) 
-    entity:Spawn()
-    entity:Activate()
-	undo.Create("SmallBridge_Holder")
-		undo.AddEntity(entity)
-		undo.SetPlayer(spawner)
-		undo.SetCustomUndoText("Undone SmallBridge Holder")
-	undo.Finish()
-	self.type = "CONTAINER"
-end
-
-function ENT:ServerSideInit()
+ENT.addInitFunction(function(self)
 	self:SetModel("models/mandrac/lgm/genholder_small_sw.mdl")
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
@@ -100,4 +86,17 @@ function ENT:ServerSideInit()
 		0.4,
 		90
 	))
+end)
+
+function ENT:SpawnFunction(spawner, trace)
+	local entity = ents.Create("sb_smallbridge_multi_holder")
+	entity:SetPos(trace.HitPos + trace.HitNormal*56) 
+    entity:Spawn()
+    entity:Activate()
+	undo.Create("SmallBridge_Holder")
+		undo.AddEntity(entity)
+		undo.SetPlayer(spawner)
+		undo.SetCustomUndoText("Undone SmallBridge Holder")
+	undo.Finish()
+	self.type = "CONTAINER"
 end
