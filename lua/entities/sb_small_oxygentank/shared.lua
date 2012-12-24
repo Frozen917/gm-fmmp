@@ -13,5 +13,5 @@ ENT.addInitFunction(function(self)
 	self.slotSize = 1
 	self.holdAngle = Angle(90, 0, 0)
 	self.heightOffset = 1.4531505584715
-	self.resources["oxygen"] = { amount = 0, maxamount = 60000, flow = 100 }
+	self.resources["oxygen"] = { amount = 0, maxamount = 60000, flow = 2000 }
 end)
