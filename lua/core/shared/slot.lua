@@ -17,7 +17,7 @@ function Slot.New(eParent, nSize, vGrabPos, vNormal, nRadius, nSpeed, nRoll)
 	slot.weld = nil
 	slot.nocollide = nil
 	slot.offset = 0
-	slot.roll = nRoll
+	slot.roll = nRoll or 0
 	return slot
 end
 
