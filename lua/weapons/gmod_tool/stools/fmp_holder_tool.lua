@@ -5,6 +5,7 @@ TOOL.Tab 		= "FMP"
 
 
 TOOL.ClientConVar["ent"] = "sb_small_holder"
+TOOL.ClientConVar["freeze"] = "0"
 
 
 
@@ -28,39 +29,20 @@ RegisterHolder("Generic 1x Small Holder", "sb_small_holder", "models/mandrac/lgm
 RegisterHolder("Smallbridge 8x Small Holder - SW", "sb_smallbridge_multi_holder", "models/mandrac/lgm/genholder_small_sw.mdl")
 RegisterHolder("SmallBridge 2x Large Holder - SW", "sb_smallbridge_holder", "models/mandrac/lgm/genholder_sw.mdl")
 
-local function paintOutlined(object)
-	local x,y = object:GetPos()
-	draw.RoundedBox(2, x, y, object:GetWide(), object:GetTall(), Color(25, 25, 25))
-	local bgcolor
-	if object.GetBackgroundColor then
-		bgcolor = object:GetBackgroundColor()
-	else
-		bgcolor = Color(255, 255, 255)
-	end
-	draw.RoundedBox(2, x + 2, y + 2, object:GetWide() - 4, object:GetTall() - 4, bgcolor)
-	object:originalPaint()
-end
-
 
 if CLIENT then
-	local function paintOutlined(object)
-		local x,y = object:GetPos()
-		draw.RoundedBox(2, x, y, object:GetWide(), object:GetTall(), Color(25, 25, 25))
-		local bgcolor
-		if object.GetBackgroundColor then
-			bgcolor = object:GetBackgroundColor()
-		else
-			bgcolor = Color(255, 255, 255)
-		end
-		draw.RoundedBox(2, x + 2, y + 2, object:GetWide() - 4, object:GetTall() - 4, bgcolor)
-		object:originalPaint()
-	end
 
 	function TOOL.BuildCPanel(CPanel)
 		CPanel:AddControl("Header", { Text = "Holder Tool", Description = "Spawns a holder" })
 		local panel = vgui.Create("DPanel", CPanel)
 		panel:SetSize(CPanel:GetWide() - 20, 30)
 		CPanel:AddItem(panel)
+		
+		local checkbox = vgui.Create("DCheckBoxLabel", CPanel)
+			checkbox:SetText("Freeze ?")
+			checkbox:SetConVar("fmp_holder_tool_freeze")
+			checkbox:SizeToContents()
+			CPanel:AddItem(checkbox)
 		
 		local image = vgui.Create("DImage", panel)
 		image:SetImage("generators/gui/selection")
@@ -105,7 +87,7 @@ function TOOL:LeftClick(trace)
 					self:GetOwner():PrintMessage(HUD_PRINTTALK, "You are not allowed to do that!")
 					return false
 				end
-				ent:SpawnFunction(self:GetOwner(), trace)
+				ent:SpawnFunction(self:GetOwner(), trace, self:GetClientInfo("freeze") == "1")
 			return true
 		else
 			self:GetOwner():PrintMessage(HUD_PRINTTALK, className.." is not a valid holder!")

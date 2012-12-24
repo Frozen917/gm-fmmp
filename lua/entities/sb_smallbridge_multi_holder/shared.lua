@@ -6,6 +6,7 @@ ENT.Spawnable 		= true
 ENT.AdminSpawnable	= true
 
 ENT.implementation = { "holder_entity" }
+ENT.DeviceName = "SmallBridge 8x Small Holder - SW"
 include("headers/headers.lua")
 
 ENT.addInitFunction(function(self)
