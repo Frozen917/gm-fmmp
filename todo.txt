@@ -1,10 +1,8 @@
 Todo:
-	- Send entity animations on connect
+	- Send sounds on connect
 	- Fix pipe undo
-	- Add high priority hooks
-	- Add generic ServerSideInit for every entities!
-	- self.environments = Universe.GetEntityEnvironments(self) should be added for every entities in ServerSideInit
 	- fancy holder animations :D
 	- hubs and control devices for resource flow
 	- global device registration
 	- API :(
+	- Refactoring undos to use ENT.Name (use a generic SpawnFunction)

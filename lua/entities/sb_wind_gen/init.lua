@@ -19,16 +19,11 @@ function ENT:SpawnFunction(spawner, trace)
 	entity:SetPos(trace.HitPos + trace.HitNormal*90) 
     entity:Spawn()
     entity:Activate()
-	undo.Create("Wind_Generator")
+	undo.Create("Wind_Turbine")
 		undo.AddEntity(entity)
 		undo.SetPlayer(spawner)
-		undo.SetCustomUndoText("Undone Wind Generator")
+		undo.SetCustomUndoText("Undone Wind Turbine")
 	undo.Finish()
-end
-
-function ENT:OnRemove()
-	self.BaseClass.OnRemove(self)
-	self.sound:Stop()
 end
 
 function ENT:Think()

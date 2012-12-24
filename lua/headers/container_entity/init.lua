@@ -1,5 +1,4 @@
 ENT.addInitFunction(function(self)
-	self.type = "CONTAINER"
 	self:SetSkin(1)
 end)
 

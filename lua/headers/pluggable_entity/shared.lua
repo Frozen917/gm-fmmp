@@ -3,6 +3,7 @@ include("headers/headers.lua")
 
 ENT.addInitFunction(function(self)
 	self.plugs = {}
+	self.type = "DEVICE"
 end)
 
 function ENT:GetFreePlug(vClosest)	-- Local to entity

@@ -1,6 +1,5 @@
 ENT.addInitFunction(function(self)
 	self.slots = {}
-	self.type = "HOLDER"
 	self.angleSensibility = 25
 	ResourceDistribution.AddDevice(self)
 end)

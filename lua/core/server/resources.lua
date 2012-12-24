@@ -15,14 +15,23 @@ function ResourceDistribution.Think()
 end
 hook.Add("Think", "GMFMMResourceDistribution", ResourceDistribution.Think)
 
-function ResourceDistribution.AddDevice(eDevice)
-	table.insert(ResourceDistribution.Devices, eDevice)
+function ResourceDistribution.AddDevice(device)
+	if not ResourceDistribution.FindDeviceIndex(device) then
+		table.insert(ResourceDistribution.Devices, device)
+	end
 end
 
-function ResourceDistribution.RemoveDevice(eDevice)
+function ResourceDistribution.RemoveDevice(device)
+	local index = ResourceDistribution.FindDeviceIndex(device)
+	if index then
+		table.remove(ResourceDistribution.Devices, index)
+	end
+end
+
+function ResourceDistribution.FindDeviceIndex(device)
 	for i,v in ipairs(ResourceDistribution.Devices) do
-		if v == eDevice then
-			table.remove(ResourceDistribution.Devices, i)
+		if v == device then
+			return i
 		end
 	end
 end

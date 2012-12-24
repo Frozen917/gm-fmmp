@@ -33,7 +33,7 @@ function ENT:OnRemove()
 end
 
 function ENT:Think()
-	if self:Runnable() and self.enabled then
+	if self.runnable and self.enabled then
 		self.generated:SetPos(self:GetPos())
 		if CurTime() - self.lastSeqReset > 0.5 then
 			self.lastSeqReset = CurTime()
@@ -101,7 +101,7 @@ function ENT:ProcessResources()
 end
 
 function ENT:UpdateStatus()
-	if self:Runnable() and self.enabled then
+	if self.runnable and self.enabled then
 		self.generated = Universe.CreateEnvironment(nil, 500, self:GetPos(), {oxygen=0}, {ents_gravity = -1, players_gravity = 1, wind = -1, noclip = -1})
 		self.sound:Play()
 		self.lastSeqReset = CurTime()

@@ -3,4 +3,5 @@ include("headers/headers.lua")
 
 ENT.addInitFunction(function (self)
 	self.resourceType = ""
+	self.type = "FILTER"
 end)

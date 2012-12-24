@@ -1,6 +1,5 @@
 ENT.addInitFunction(function(self)
 	self:SetSkin(1)
-	self.type = "FILTER"
 end)
 
 function ENT:Use()

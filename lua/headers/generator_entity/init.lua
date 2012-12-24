@@ -1,13 +1,16 @@
 ENT.addInitFunction(function(self)
 	self:SetSkin(1)
 	self.resourceCache = {}
-	self.type = "GENERATOR"
 	self.outputCounter = {}
+	self.sound = nil
 	ResourceDistribution.AddDevice(self)
 end)
 
 function ENT:OnRemove()
 	ResourceDistribution.RemoveDevice(self)
+	if self.sound then
+		self.sound:Stop()
+	end
 end
 
 function ENT:ProcessResources()
