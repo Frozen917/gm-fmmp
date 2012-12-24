@@ -8,7 +8,10 @@ ENT.AdminSpawnable	= true
 ENT.AutomaticFrameAdvance = true 
 
 ENT.implementation = { "generator_entity" }
+ENT.DeviceName = "Small Wind Turbine"
 include("headers/headers.lua")
+
+
 
 ENT.addInitFunction(function(self)
 	self.slotSize = 1
@@ -17,6 +20,5 @@ ENT.addInitFunction(function(self)
 	{
 		energy = 100
 	}
-	self:SetDeviceName("Small Wind Turbine")
 end)
 

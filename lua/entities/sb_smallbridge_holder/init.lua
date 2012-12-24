@@ -27,17 +27,5 @@ ENT.addInitFunction(function(self)
 		40,
 		0.4
 	))
+	self.type = "HOLDER"
 end)
-
-function ENT:SpawnFunction(spawner, trace)
-	local entity = ents.Create("sb_smallbridge_holder")
-	entity:SetPos(trace.HitPos + trace.HitNormal*56) 
-    entity:Spawn()
-    entity:Activate()
-	undo.Create("SmallBridge_Generator_holder")
-		undo.AddEntity(entity)
-		undo.SetPlayer(spawner)
-		undo.SetCustomUndoText("Undone SmallBridge Generator Holder")
-	undo.Finish()
-	self.type = "GENERATOR"
-end

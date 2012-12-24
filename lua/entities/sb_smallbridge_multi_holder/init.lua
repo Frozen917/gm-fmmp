@@ -87,16 +87,3 @@ ENT.addInitFunction(function(self)
 		90
 	))
 end)
-
-function ENT:SpawnFunction(spawner, trace)
-	local entity = ents.Create("sb_smallbridge_multi_holder")
-	entity:SetPos(trace.HitPos + trace.HitNormal*56) 
-    entity:Spawn()
-    entity:Activate()
-	undo.Create("SmallBridge_Holder")
-		undo.AddEntity(entity)
-		undo.SetPlayer(spawner)
-		undo.SetCustomUndoText("Undone SmallBridge Holder")
-	undo.Finish()
-	self.type = "CONTAINER"
-end

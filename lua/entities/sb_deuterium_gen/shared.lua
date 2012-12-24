@@ -6,6 +6,7 @@ ENT.Spawnable 		= true
 ENT.AdminSpawnable	= true
 
 ENT.implementation = { "generator_entity" }
+ENT.DeviceName = "Large Deuterium Generator"
 include("headers/headers.lua")
 
 ENT.addInitFunction(function(self)
@@ -20,5 +21,4 @@ ENT.addInitFunction(function(self)
 	{
 		energy = 500
 	}
-	self:SetDeviceName("Large Deuterium Generator")
 end)

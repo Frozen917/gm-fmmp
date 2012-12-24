@@ -13,18 +13,6 @@ ENT.addInitFunction(function(self)
 	ResourceDistribution.AddDevice(self)
 end)
 
-function ENT:SpawnFunction(spawner, trace)
-	local entity = ents.Create("sb_environmental_controler")
-	entity:SetPos(trace.HitPos + trace.HitNormal*56) 
-    entity:Spawn()
-    entity:Activate()
-	undo.Create("Environmental Controler")
-		undo.AddEntity(entity)
-		undo.SetPlayer(spawner)
-		undo.SetCustomUndoText("Undone Environmental Controler")
-	undo.Finish()
-end
-
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
 	Universe.RemoveEnvironment(self.generated)

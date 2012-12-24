@@ -6,10 +6,10 @@ ENT.Spawnable 		= true
 ENT.AdminSpawnable	= true
 
 ENT.implementation = { "container_entity" }
+ENT.DeviceName = "Small Oxygen Tank"
 include("headers/headers.lua")
 
 ENT.addInitFunction(function(self)
-	self:SetDeviceName("Small Oxygen Tank")
 	self.slotSize = 1
 	self.holdAngle = Angle(90, 0, 0)
 	self.heightOffset = 1.4531505584715

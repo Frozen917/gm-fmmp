@@ -11,6 +11,8 @@ for _,header in ipairs(ENT.implementation) do
 	table.insert(headers, header)
 end
 
+ENT.ClassName = string.sub(ENT.Folder, 8)
+
 for _,header in ipairs(headers) do
 	if not ENT.loadedHeaders[header] then
 		include("headers/" .. header .. "/shared.lua")
