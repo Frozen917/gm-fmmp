@@ -99,7 +99,7 @@ function ENT:ProcessResources()
 			local runnable = true
 			for resource,amount in pairs(needed[index]) do -- Split the resources between generators
 				if slot:GetGenerator():GetType() == "GENERATOR" then
-					if cache[resource] >= amount then
+					if (cache[resource] or 0) >= amount then
 						resources[resource] = amount
 					else
 						runnable = false
@@ -110,9 +110,7 @@ function ENT:ProcessResources()
 					runnable = false
 				end
 			end
-			if runnable then	-- Run if it can
-				slot:GetGenerator():Run(resources)
-			end
+			slot:GetGenerator():Run(resources)
 			for resource,amount in pairs(resources) do 	-- Consume the resources if the device ran, reduce the splitting
 				if runnable then
 					cache[resource] = (cache[resource] or 0) - amount

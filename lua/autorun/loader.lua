@@ -55,5 +55,5 @@ local function load()
 		end
 	print("Gamemode loaded !")
 end
-load()
+ if ( string.find( string.lower( game.GetMap() ), "sb_" ) ) then load() end
 concommand.Add("gmreload", load)
