@@ -123,6 +123,17 @@ end
 
 -- TODO: Limitation with flow! Now the limitation is for 1 request
 function ENT:TakeResource(resource, amount)
+	-- Take and distribute the resources
+	local taken = 0
+	for _,slot in ipairs(self:SortSlots()) do
+		if not slot:IsFree() then
+			taken = taken + slot:GetGenerator():TakeResource(resource, math.max(0, amount - taken))
+		end
+	end
+	return taken
+end
+
+function ENT:SortSlots()
 	-- Sort to equilibrate resources in the slots
 	local sorted = {}
 	for _,slot in ipairs(self:GetSlots()) do
@@ -142,15 +153,7 @@ function ENT:TakeResource(resource, amount)
 			end
 		end
 	end
-
-	-- Take and distribute the resources
-	local taken = 0
-	for _,slot in ipairs(sorted) do
-		if not slot:IsFree() then
-			taken = taken + slot:GetGenerator():TakeResource(resource, math.max(0, amount - taken))
-		end
-	end
-	return taken
+	return sorted
 end
 
 function ENT:AskResource(resource)

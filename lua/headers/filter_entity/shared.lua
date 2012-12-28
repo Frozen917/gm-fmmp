@@ -5,3 +5,7 @@ ENT.addInitFunction(function (self)
 	self.resourceType = ""
 	self.type = "FILTER"
 end)
+
+function ENT:GetFilterType()
+	return self.resourceType
+end
