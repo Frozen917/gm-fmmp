@@ -8,7 +8,7 @@ function ENT:SpawnFunction(spawner, trace, frozen)
 	local a = trace.HitNormal:Angle() 
 	a.pitch = a.pitch + 90
 
-	ent:SetPos(trace.HitPos)
+	ent:SetPos(trace.HitPos + trace.HitNormal)
 	ent:Spawn()
 	ent:Activate()
 	ent:PhysWake()
