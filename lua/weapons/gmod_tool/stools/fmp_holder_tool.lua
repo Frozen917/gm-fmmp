@@ -81,13 +81,8 @@ function TOOL:LeftClick(trace)
 	if SERVER then
 		local className = self:GetClientInfo("ent")
 		if table.HasValue(allowedClasses, className) then
-			
-				local ent = scripted_ents.GetStored(className).t
-				if ent.AdminSpawnable and not ent.Spawnable and not self:GetOwner():IsAdmin() then
-					self:GetOwner():PrintMessage(HUD_PRINTTALK, "You are not allowed to do that!")
-					return false
-				end
-				ent:SpawnFunction(self:GetOwner(), trace, self:GetClientInfo("freeze") == "1")
+				local spawnFunction = Util.GetStoredMember(className, "SpawnFunction")
+				spawnFunction(Util.GetStoredEntity(className), self:GetOwner(), trace, self:GetClientInfo("freeze") == "1")
 			return true
 		else
 			self:GetOwner():PrintMessage(HUD_PRINTTALK, className.." is not a valid holder!")

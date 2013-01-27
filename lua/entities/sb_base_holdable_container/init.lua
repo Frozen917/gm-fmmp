@@ -8,11 +8,12 @@ function ENT:SpawnFunction(spawner, trace, frozen)
 
 	local a = trace.HitNormal:Angle() 
 	a.pitch = a.pitch + 90
-
+	ent:SetPos( trace.HitPos + trace.HitNormal )
 	ent:Spawn()
 	ent:Activate()
+	ent:PhysWake()
 	local min = ent:OBBMins()
-	ent:SetPos( trace.HitPos - trace.HitNormal * (min.z+1) )
+	ent:SetPos( trace.HitPos - trace.HitNormal * min.z )
 	ent:SetAngles( a )
 	local txt = string.gsub(self.DeviceName, " ", "_")
 	undo.Create(txt)
@@ -20,6 +21,9 @@ function ENT:SpawnFunction(spawner, trace, frozen)
 		undo.SetPlayer(spawner)
 		undo.SetCustomUndoText("Undone " .. self.DeviceName)
 	undo.Finish()
+	if frozen and ent:GetPhysicsObject():IsValid() then
+		ent:GetPhysicsObject():EnableMotion(false)
+	end
 	--self:OnSpawn(spawner, trace, frozen)
 end
 

@@ -4,6 +4,20 @@ function Util.BezierZ(a, b, c, d)
 	return function(t) return a*(1-t)^3 + 3*b*t*(t-1)^2 + 3*c*(t^2)*(1-t) + d*t^3 end
 end
 
+function Util.GetStoredMember(sClassName, sMemberName)
+	local member = nil
+	while not member and sClassName do
+		local tab = Util.GetStoredEntity(sClassName)
+		member = tab[sMemberName]
+		sClassName = tab.Base
+	end
+	return member
+end
+
+function Util.GetStoredEntity(sClassName)
+	return scripted_ents.GetStored(sClassName).t
+end
+
 function Util.EntityCenter(entity)
 	return entity:LocalToWorld(entity:OBBCenter())
 end

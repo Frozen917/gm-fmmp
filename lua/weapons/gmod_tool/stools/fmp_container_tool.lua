@@ -102,30 +102,33 @@ function TOOL:LeftClick(trace)
 	if SERVER then
 		local className = self:GetClientInfo("ent")
 		if table.HasValue(allowedClasses, className) then
-				local ent = scripted_ents.GetStored(className).t
-				if ent.AdminSpawnable and not ent.Spawnable and not self:GetOwner():IsAdmin() then
-					self:GetOwner():PrintMessage(HUD_PRINTTALK, "You are not allowed to do that!")
-					return false
-				end
-				local entity = ent:SpawnFunction(self:GetOwner(), trace, self:GetClientInfo("freeze") == "1")
-				if self:GetClientInfo("autohold") == "1" then
-					local holder = trace.Entity
-					if holder and holder.type == "HOLDER" then
-						local found = false
-						local distance = -1
-						local nearest = nil
-						for _,slot in ipairs(holder:GetSlots()) do
-							if ( distance == -1 or holder:WorldToLocal(trace.HitPos):Distance(slot:GetPos()) < distance) and slot:GetGenerator() == nil and slot:GetSize() == entity:GetSlotSize() then
-								distance = holder:WorldToLocal(trace.HitPos):Distance(slot:GetPos())
-								nearest = slot
-								found = true
+				--local ent = scripted_ents.GetStored(className).t
+				local spawnFunc = Util.GetStoredMember(className, "SpawnFunction")
+				if spawnFunc then
+					local entity = spawnFunc(Util.GetStoredEntity(className), self:GetOwner(), trace, self:GetClientInfo("freeze") == "1")
+					if self:GetClientInfo("autohold") == "1" then
+						local holder = trace.Entity
+						if holder and holder.type == "HOLDER" then
+							local found = false
+							local distance = -1
+							local nearest = nil
+							for _,slot in ipairs(holder:GetSlots()) do
+								if ( distance == -1 or holder:WorldToLocal(trace.HitPos):Distance(slot:GetPos()) < distance) and slot:GetGenerator() == nil and slot:GetSize() == entity:GetSlotSize() then
+									distance = holder:WorldToLocal(trace.HitPos):Distance(slot:GetPos())
+									nearest = slot
+									found = true
+								end
+							end
+							if nearest then
+								nearest:Grab(entity)
 							end
 						end
-						if nearest then
-							nearest:Grab(entity)
-						end
 					end
+				else
+					self:GetOwner():PrintMessage(HUD_PRINTTALK, "Unable to find a valid spawn function")
+					return false
 				end
+				
 			return true
 		else
 			self:GetOwner():PrintMessage(HUD_PRINTTALK, className.." is not a valid container!")
