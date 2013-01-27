@@ -1,17 +1,7 @@
-AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("cl_init.lua")
 
 include("shared.lua")
-
-ENT.addInitFunction(function(self)
-	self:SetModel("models/mandrac/lgm/lifesupport_l.mdl")
-	self:PhysicsInit(SOLID_VPHYSICS)
-	self:SetMoveType(MOVETYPE_VPHYSICS)
-	self:SetSolid(SOLID_VPHYSICS)
-	self.sound = CreateSound(self, Sound("ambient/underground.wav"))
-	self.lastSeqReset = CurTime()
-	ResourceDistribution.AddDevice(self)
-end)
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)

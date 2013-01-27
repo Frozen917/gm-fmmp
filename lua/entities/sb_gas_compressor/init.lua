@@ -1,34 +1,7 @@
-AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("cl_init.lua")
 
 include("shared.lua")
-
-ENT.addInitFunction(function(self)
-	self:SetModel("models/mandrac/lgm/compressor.mdl")
-	self:PhysicsInit(SOLID_VPHYSICS)
-	self:SetMoveType(MOVETYPE_VPHYSICS)
-	self:SetSolid(SOLID_VPHYSICS)
-	self.resourceCache = {}
-
-	table.insert(self.slots, Slot.New(
-		self,
-		1,
-		Vector(48.4833984375,0.041036151349545,-9.5582443237305),
-		Vector(1, 0, 0),
-		15,
-		0.4,
-		90
-	))
-	table.insert(self.slots, Slot.New(
-		self,
-		1,
-		Vector(-48.4833984375,-0.043010577559471,-9.5570426940918),
-		Vector(-1, 0, 0),
-		15,
-		0.4,
-		90
-	))
-end)
 
 function ENT:SpawnFunction(spawner, trace)
 	local entity = ents.Create("sb_gas_compressor")

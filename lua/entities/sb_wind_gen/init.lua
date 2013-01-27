@@ -1,18 +1,7 @@
-AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("cl_init.lua")
 
 include("shared.lua")
-
-ENT.addInitFunction(function(self)
-	self:SetModel("models/mandrac/lgm/wind_turbine.mdl")
-	self:PhysicsInit(SOLID_VPHYSICS)
-	self:SetMoveType(MOVETYPE_VPHYSICS)
-	self:SetSolid(SOLID_VPHYSICS)
-	self.lastSeqReset = CurTime()
-	self.environments = Universe.GetEntityEnvironments(self)
-	self.sound = CreateSound(self, "ambient/machines/machine3.wav")
-	self.enabled = true
-end)
 
 function ENT:Think()
 	if CurTime() - self.lastSeqReset > 1 then

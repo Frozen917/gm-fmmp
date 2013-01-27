@@ -1,10 +1,22 @@
-ENT.implementation = { "fmp_entity", "rd_entity" }
-include("headers/headers.lua")
+ENT.Type 			= "anim"
+ENT.Base 			= "base_gmodentity"
+ENT.Category 		= "FMP GameMode"
 
-ENT.addInitFunction(function(self)
+ENT.Spawnable 		= false
+ENT.AdminSpawnable	= false
+
+function ENT:Initialize()
+	if SERVER then
+		self:SetUseType(SIMPLE_USE)
+		self.enabled = false
+		self.runnable = false
+		self.slots = {}
+		self.angleSensibility = 25
+		ResourceDistribution.AddDevice(self)
+	end
 	self.plugs = {}
 	self.type = "DEVICE"
-end)
+end
 
 function ENT:GetFreePlug(vClosest)	-- Local to entity
 	local plug = nil
