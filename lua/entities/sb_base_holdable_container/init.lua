@@ -46,7 +46,7 @@ function ENT:GetCachedResource(resource)
 end
 
 function ENT:GetType()
-	return self.type or "HOLDER"
+	return self.type or "CONTAINER"
 end
 
 function ENT:GetNeeds()

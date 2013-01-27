@@ -42,7 +42,7 @@ function ENT:SetHolder(eHolder)
 end
 
 function ENT:GetType()
-	return self.type or "HOLDER"
+	return self.type or "GENERATOR"
 end
 
 function ENT:OnRemove()

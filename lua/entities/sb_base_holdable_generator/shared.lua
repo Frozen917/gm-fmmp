@@ -18,8 +18,18 @@ function ENT:Initialize()
 		self.lastuse = CurTime()
 		ResourceDistribution.AddDevice(self)
 	end
+	self.inputRates = {}
+	self.outputRates = {}
 	self.type = "GENERATOR"
 	self.slotSize = -1
 	self.heightOffset = 0
 	self.holdAngle = Angle(0, 0, 0)
+end
+
+function ENT:GetSlotSize()
+	return self.slotSize
+end
+
+function ENT:GetHoldAngle()
+	return self.holdAngle
 end
