@@ -80,3 +80,7 @@ end
 function Util.RandInt(n1, n2)
 	return math.floor(math.random()*(n2-n1+0.999)+n1)
 end
+
+function Util.Capitalize(text)
+	return string.SetChar(text, 1, string.upper(string.GetChar(text, 1)))
+end

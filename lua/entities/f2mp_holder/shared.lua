@@ -1,5 +1,5 @@
 ENT.Type 			= "anim"
-ENT.Base 			= "base_gmodentity"
+ENT.Base 			= "f2mp_base_rd"
 ENT.Category 		= "FMP GameMode"
 
 ENT.Spawnable 		= false
@@ -7,9 +7,6 @@ ENT.AdminSpawnable	= false
 
 function ENT:Initialize()
 	if SERVER then
-		self:SetUseType(SIMPLE_USE)
-		self.enabled = false
-		self.runnable = false
 		self.slots = {}
 		self.angleSensibility = 25
 		ResourceDistribution.AddDevice(self)

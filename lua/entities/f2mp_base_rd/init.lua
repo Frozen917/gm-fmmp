@@ -5,10 +5,8 @@ include("shared.lua")
 
 function ENT:SpawnFunction(spawner, trace, frozen)
 	local ent = ents.Create(self.ClassName)
-
 	local a = trace.HitNormal:Angle() 
 	a.pitch = a.pitch + 90
-
 	ent:Spawn()
 	ent:Activate()
 	local min = ent:OBBMins()
@@ -20,7 +18,6 @@ function ENT:SpawnFunction(spawner, trace, frozen)
 		undo.SetPlayer(spawner)
 		undo.SetCustomUndoText("Undone " .. self.DeviceName)
 	undo.Finish()
-	--self:OnSpawn(spawner, trace, frozen)
 end
 
 function ENT:Use()

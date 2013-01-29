@@ -3,32 +3,16 @@ AddCSLuaFile("cl_init.lua")
 
 include("shared.lua")
 
-function ENT:SpawnFunction(spawner, trace, frozen)
-	local ent = ents.Create(self.ClassName)
-
-	local a = trace.HitNormal:Angle() 
-	a.pitch = a.pitch + 90
-
-	ent:Spawn()
-	ent:Activate()
-	local min = ent:OBBMins()
-	ent:SetPos( trace.HitPos - trace.HitNormal * (min.z+1) )
-	ent:SetAngles( a )
-	local txt = string.gsub(self.DeviceName, " ", "_")
-	undo.Create(txt)
-		undo.AddEntity(ent)
-		undo.SetPlayer(spawner)
-		undo.SetCustomUndoText("Undone " .. self.DeviceName)
-	undo.Finish()
-	--self:OnSpawn(spawner, trace, frozen)
-end
-
-function ENT:Use()
-	self.enabled = not self.enabled
-end
-
-function ENT:GetCachedResource(resource)
-	return self:AskResource(resource)
+function ENT:Setup(type)
+	local settings = FMMP_Holders[type]
+	self.DeviceName = settings.name
+	for _,slot in pairs(settings.slots) do
+		table.insert(self.slots, Slot.New(self, unpack(slot)))
+	end
+	for i,plug in pairs(settings.plugs) do
+		table.insert(self.plugs, Plug.New(self, i, unpack(plug)))
+	end
+	self:SetModel(settings.model)
 end
 
 function ENT:GetType()
