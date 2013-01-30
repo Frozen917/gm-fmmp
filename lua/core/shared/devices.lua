@@ -49,16 +49,19 @@ end
 		resource_name2 = rate2
 	}
 ]]
-function Devices.RegisterGenerator(sName, sModel, sSound, aHoldAngle, nSlotSize, nHeightOffset, tInputs, tOutputs)
+function Devices.RegisterGenerator(sName, sModel, sSound, sAnimationOn, sAnimationIdle, aHoldAngle, nSlotSize, nHeightOffset, tCharacteristics, tInputs, tOutputs)
 	local index = string.lower(string.gsub(sName, " ", "_"))
 	if not Devices.Generators[index] then
 		Devices.Generators[index] = {
 			name = sName,
 			model = sModel,
 			sound = sSound,
+			animationOn = sAnimationOn,
+			animationIdle = sAnimationIdle,
 			holdAngle = aHoldAngle,
 			slotSize = nSlotSize,
 			heightOffset = nHeightOffset,
+			requiredCharacteristics = tCharacteristics,
 			inputRates = tInputs,
 			outputRates = tOutputs
 		}
@@ -143,9 +146,17 @@ Devices.RegisterContainer(	"Small Oxygen Tank",
 Devices.RegisterGenerator(	"Small Wind Generator",
 							"models/mandrac/lgm/wind_turbine.mdl",
 							"ambient/machines/machine3.wav",
+							"on", -- Animation when enabled
+							"idle",	-- Animation when disabled
 							Angle(90, 0, 0),
 							1,
 							0,
+							{ 
+								wind = {
+									min = 0.1,
+									max = 100
+								}
+							},
 							{},
 							{
 								energy = 100
@@ -154,9 +165,12 @@ Devices.RegisterGenerator(	"Small Wind Generator",
 Devices.RegisterGenerator(	"Large Deuterium Generator",
 							"models/mandrac/lgm/deuterium_gen.mdl",
 							"",
+							"",
+							"",
 							Angle(90, -90, -90),
 							3,
 							0,
+							{},
 							{
 								energy = 20
 							},

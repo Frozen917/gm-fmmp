@@ -3,10 +3,6 @@ AddCSLuaFile("cl_init.lua")
 
 include("shared.lua")
 
-function ENT:GetType()
-	return self.type or "HOLDER"
-end
-
 function ENT:OnRemove()
 	ResourceDistribution.RemoveDevice(self)
 end

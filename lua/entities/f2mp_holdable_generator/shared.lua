@@ -5,15 +5,21 @@ ENT.Category 		= "FMP GameMode"
 ENT.Spawnable 		= false
 ENT.AdminSpawnable	= false
 
+ENT.AutomaticFrameAdvance = true
+
 function ENT:Setup(type)
 	local settings = Devices.GetRegisteredGenerators()[type]
+	self.animationOn = settings.animationOn
+	self.animationIdle = settings.animationIdle
+	self.sound = settings.sound
+	self.requiredCharacteristics = settings.requiredCharacteristics
 	self.inputRates = settings.inputRates
 	self.outputRates = settings.outputRates
 	self.slotSize = settings.slotSize
 	self.holdAngle = settings.holdAngle
-	self:SetModel(settings.model)
 	self.deviceClass = type
 	self.DeviceName = settings.name
+	self:SetModel(settings.model)
 end
 
 function ENT:Initialize()
@@ -22,6 +28,8 @@ function ENT:Initialize()
 		self.resourceCache = {}
 		self.outputCounter = {}
 		self.holder = nil
+		self.lastSeqReset = CurTime()
+		self.sound = CreateSound(self, self.sound)
 		--ResourceDistribution.AddDevice(self)
 	end
 	self.type = "GENERATOR"

@@ -34,6 +34,9 @@ function ENT:SpawnFunction(spawner, trace, frozen, typ)
 		undo.SetCustomUndoText("Undone " .. ent.DeviceName)
 	undo.Finish()
 	
+	ent:SetNWEntity("OwnerObj", spawner)
+	ent:SetNWString("Owner", spawner:Nick())
+
 	return ent
 end
 

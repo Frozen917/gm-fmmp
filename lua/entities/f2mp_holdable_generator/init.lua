@@ -52,8 +52,15 @@ end
 
 function ENT:Run(resources)
 	local enough = true
-	for resource,amount in pairs(self.inputRates) do
+	for resource,amount in pairs(self.inputRates) do 	-- Check for resources
 		if (resources[resource] or 0) < amount then
+			enough = false
+			break
+		end
+	end
+	for characteristic,limits in pairs(self.requiredCharacteristics) do 	-- Check for characteristics (wind? water?)
+		local charac = self:GetEnvCharacteristic(characteristic)
+		if charac < limits.min or charac > limits.max then
 			enough = false
 			break
 		end
@@ -65,7 +72,6 @@ function ENT:Run(resources)
 	end
 	self.runnable = enough
 	self.enabled = enough and self.enabled
-	self:UpdateSkin()
 end
 
 function ENT:TakeResource(resource, amount)
@@ -100,10 +106,23 @@ function ENT:BroadcastResources()
 	self.outputCounter = {}
 end
 
-function ENT:UpdateSkin()
-	if self.runnable and self.enabled and self:GetSkin() == 1 then
-		self:SetSkin(2)
-	elseif (not self.runnable or not self.holder) and self:GetSkin() == 2 then
-		self:SetSkin(1)
+function ENT:Think()
+	if CurTime() - self.lastSeqReset > 1 then
+		self.lastSeqReset = CurTime()
+		if not self.holder then self.runnable = false end
+		local sequence
+		if self.runnable then
+			if not self.sound:IsPlaying() then self.sound:Play() end
+			if self:GetSkin() == 1 then self:SetSkin(2) end
+			sequence = self.animationOn
+		else
+			if self.sound:IsPlaying() then self.sound:Stop() end
+			if self:GetSkin() == 2 then self:SetSkin(1) end
+			sequence = self.animationIdle
+		end
+		self:ResetSequence(self:LookupSequence(sequence))
+		self:SetPlaybackRate(1)
 	end
+	self:NextThink(CurTime())
+	return true
 end
