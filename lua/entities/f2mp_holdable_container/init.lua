@@ -4,7 +4,7 @@ AddCSLuaFile("cl_init.lua")
 include("shared.lua")
 
 function ENT:Setup(type)
-	local settings = FMMP_Containers[type]
+	local settings = Devices.GetRegisteredContainers()[type]
 	self.resources = settings.resources
 	self.holdAngle = settings.holdAngle
 	self.slotSize = settings.slotSize

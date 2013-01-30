@@ -4,7 +4,7 @@ AddCSLuaFile("cl_init.lua")
 include("shared.lua")
 
 function ENT:Setup(type)
-	local settings = FMMP_Generators[type]
+	local settings = Devices.GetRegisteredGenerators()[type]
 	self.inputRates = settings.inputRates
 	self.outputRates = settings.outputRates
 	self.slotSize = settings.slotSize
