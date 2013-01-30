@@ -10,8 +10,6 @@ function ENT:Setup(type)
 	self.slotSize = settings.slotSize
 	self:SetModel(settings.model)
 	self.DeviceName = settings.name
-	
-	PrintTable(self)
 end
 
 

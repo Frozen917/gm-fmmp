@@ -3,16 +3,18 @@ AddCSLuaFile("cl_init.lua")
 
 include("shared.lua")
 
-function ENT:SpawnFunction(spawner, trace, frozen)
+function ENT:SpawnFunction(spawner, trace, frozen, ...)
 	local ent = ents.Create(self.ClassName)
 	local a = trace.HitNormal:Angle() 
 	a.pitch = a.pitch + 90
+	ent:Setup(...)
 	ent:Spawn()
 	ent:Activate()
 	local min = ent:OBBMins()
 	ent:SetPos( trace.HitPos - trace.HitNormal * (min.z+1) )
 	ent:SetAngles( a )
-	local txt = string.gsub(self.DeviceName, " ", "_")
+	
+	local txt = string.gsub(ent.DeviceName, " ", "_")
 	undo.Create(txt)
 		undo.AddEntity(ent)
 		undo.SetPlayer(spawner)

@@ -11,8 +11,6 @@ function ENT:Setup(type)
 	self.holdAngle = settings.holdAngle
 	self:SetModel(settings.model)
 	self.DeviceName = settings.name
-	
-	PrintTable(self)
 end
 
 function ENT:Use()

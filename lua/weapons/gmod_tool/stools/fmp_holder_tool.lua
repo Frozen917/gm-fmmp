@@ -1,4 +1,4 @@
-TOOL.Mode       = "fmp_holder_tool"
+TOOL.Mode       = "f2mp_holder_tool"
 TOOL.Category   = "F2MP GameMode"
 TOOL.Name       = "Holder Tool"
 TOOL.Tab 		= "F2MP"
@@ -9,9 +9,9 @@ TOOL.ClientConVar["freeze"] = "0"
 
 -- CLIENT
 if CLIENT then
-    language.Add("Tool.fmp_holder_tool.name", "Holder Tool" )
-    language.Add("Tool.fmp_holder_tool.desc", "Create a holder!" )
-    language.Add("Tool.fmp_holder_tool.0", "Left click to create a holder")
+    language.Add("Tool.f2mp_holder_tool.name", "Holder Tool" )
+    language.Add("Tool.f2mp_holder_tool.desc", "Create a holder!" )
+    language.Add("Tool.f2mp_holder_tool.0", "Left click to create a holder")
 	
 	
 	
@@ -27,7 +27,7 @@ if CLIENT then
 		
 		local checkbox = vgui.Create("DCheckBoxLabel", CPanel)
 			checkbox:SetText("Freeze ?")
-			checkbox:SetConVar("fmp_holder_tool_freeze")
+			checkbox:SetConVar("f2mp_holder_tool_freeze")
 			checkbox:SizeToContents()
 			CPanel:AddItem(checkbox)
 		
@@ -50,7 +50,7 @@ if CLIENT then
 			spawnIcon.DoClick = function(icon)
 				image:SetPos(icon:GetPos())
 				image:SetVisible(true)
-				RunConsoleCommand("fmp_holder_tool_type", typ)
+				RunConsoleCommand("f2mp_holder_tool_type", typ)
 			end
 			
 			local lbl = vgui.Create("DLabel", panel)
@@ -69,8 +69,7 @@ function TOOL:LeftClick(trace)
 		local typ = self:GetClientInfo("type")
 		local spawnFunction = Util.GetStoredMember("f2mp_holder", "SpawnFunction")
 		if spawnFunction then
-			local entity = spawnFunction(Util.GetStoredEntity("f2mp_holder"), self:GetOwner(), trace, self:GetClientInfo("freeze") == "1")
-			entity:Setup(typ)
+			local entity = spawnFunction(Util.GetStoredEntity("f2mp_holder"), self:GetOwner(), trace, self:GetClientInfo("freeze") == "1", typ)
 		else
 			self:GetOwner():PrintMessage(HUD_PRINTTALK, "Unable to find a valid spawn function")
 			return false
