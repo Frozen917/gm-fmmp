@@ -3,18 +3,28 @@ AddCSLuaFile("cl_init.lua")
 
 include("shared.lua")
 
-function ENT:SpawnFunction(spawner, trace, frozen, ...)
+function ENT:SpawnFunction(spawner, trace, frozen, typ)
 	local ent = ents.Create(self.ClassName)
-	local a = trace.HitNormal:Angle() 
-	a.pitch = a.pitch + 90
-	ent:Setup(...)
+
+	ent:SetDeviceClass(typ)
+	
+	ent:Setup(typ)
+	
 	ent:PhysicsInit(SOLID_VPHYSICS)
 	ent:SetMoveType(MOVETYPE_VPHYSICS)
 	ent:SetSolid(SOLID_VPHYSICS)
+	ent:SetPos(trace.HitPos + trace.HitNormal)
 	ent:Spawn()
 	ent:Activate()
+	ent:PhysWake()
+	if frozen and ent:GetPhysicsObject():IsValid() then
+		ent:GetPhysicsObject():EnableMotion(false)
+	end
 	local min = ent:OBBMins()
-	ent:SetPos( trace.HitPos - trace.HitNormal * (min.z+1) )
+	ent:SetPos( trace.HitPos - trace.HitNormal * min.z )
+	
+	local a = trace.HitNormal:Angle() 
+	a.pitch = a.pitch + 90
 	ent:SetAngles( a )
 	
 	local txt = string.gsub(ent.DeviceName, " ", "_")
@@ -23,6 +33,8 @@ function ENT:SpawnFunction(spawner, trace, frozen, ...)
 		undo.SetPlayer(spawner)
 		undo.SetCustomUndoText("Undone " .. ent.DeviceName)
 	undo.Finish()
+	
+	return ent
 end
 
 function ENT:Use()

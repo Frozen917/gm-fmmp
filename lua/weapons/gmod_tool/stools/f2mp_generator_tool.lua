@@ -71,6 +71,7 @@ function TOOL:LeftClick(trace)
 		local spawnFunc = Util.GetStoredMember("f2mp_holdable_generator", "SpawnFunction")
 		if spawnFunc then
 			local entity = spawnFunc(Util.GetStoredEntity("f2mp_holdable_generator"), self:GetOwner(), trace, self:GetClientInfo("freeze") == "1", typ)
+			--entity:SetNWString("deviceClass", typ)
 			if self:GetClientInfo("autohold") == "1" then
 				local holder = trace.Entity
 				if holder and holder.type == "HOLDER" then
@@ -93,7 +94,6 @@ function TOOL:LeftClick(trace)
 			self:GetOwner():PrintMessage(HUD_PRINTTALK, "Unable to find a valid spawn function")
 			return false
 		end
-		
 	end
 	return true
 end

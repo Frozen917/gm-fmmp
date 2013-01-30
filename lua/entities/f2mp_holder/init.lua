@@ -3,20 +3,6 @@ AddCSLuaFile("cl_init.lua")
 
 include("shared.lua")
 
-function ENT:Setup(type)
-	local settings = Devices.GetRegisteredHolders()[type]
-	self.slots = {}
-	for _,slot in pairs(settings.slots) do
-		table.insert(self.slots, Slot.New(self, unpack(slot)))
-	end
-	self.plugs = {}
-	for i,plug in pairs(settings.plugs) do
-		table.insert(self.plugs, Plug.New(self, i, unpack(plug)))
-	end
-	self:SetModel(settings.model)
-	self.DeviceName = settings.name
-end
-
 function ENT:GetType()
 	return self.type or "HOLDER"
 end

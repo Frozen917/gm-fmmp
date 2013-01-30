@@ -3,16 +3,6 @@ AddCSLuaFile("cl_init.lua")
 
 include("shared.lua")
 
-function ENT:Setup(type)
-	local settings = Devices.GetRegisteredContainers()[type]
-	self.resources = settings.resources
-	self.holdAngle = settings.holdAngle
-	self.slotSize = settings.slotSize
-	self:SetModel(settings.model)
-	self.DeviceName = settings.name
-end
-
-
 function ENT:Use()
 	self.enabled = not self.enabled
 	if CurTime() - self.lastuse < 0.5 then

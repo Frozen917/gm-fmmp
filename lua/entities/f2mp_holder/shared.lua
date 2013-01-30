@@ -5,14 +5,28 @@ ENT.Category 		= "FMP GameMode"
 ENT.Spawnable 		= false
 ENT.AdminSpawnable	= false
 
+function ENT:Setup(typ)
+	local settings = Devices.GetRegisteredHolders()[typ]
+	self.slots = {}
+	for _,slot in pairs(settings.slots) do
+		table.insert(self.slots, Slot.New(self, unpack(slot)))
+	end
+	self.plugs = {}
+	for i,plug in pairs(settings.plugs) do
+		table.insert(self.plugs, Plug.New(self, i, unpack(plug)))
+	end
+	self:SetModel(settings.model)
+	self.deviceClass = typ
+	self.DeviceName = settings.name
+end
+
 function ENT:Initialize()
+	self.BaseClass.Initialize(self)
 	if SERVER then
-		self.slots = {}
 		self.angleSensibility = 25
 		ResourceDistribution.AddDevice(self)
 	end
-	self.plugs = {}
-	self.type = "DEVICE"
+	self.type = "HOLDER"
 end
 
 function ENT:GetFreePlug(vClosest)	-- Local to entity

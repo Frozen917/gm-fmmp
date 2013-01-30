@@ -2,6 +2,7 @@ local function load()
 	if SERVER then
 		RunConsoleCommand("sv_allowcslua", "1")
 		util.AddNetworkString("UpdateLocalEnvironment")
+		util.AddNetworkString("SetupCsEntity")
 		AddCSLuaFile("autorun/loader.lua")
 		AddCSLuaFile("core/shared/environment.lua")
 		AddCSLuaFile("core/shared/slot.lua")

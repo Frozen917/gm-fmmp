@@ -5,16 +5,24 @@ ENT.Category 		= "FMP GameMode"
 ENT.Spawnable 		= false
 ENT.AdminSpawnable	= false
 
+function ENT:Setup(type)
+	local settings = Devices.GetRegisteredGenerators()[type]
+	self.inputRates = settings.inputRates
+	self.outputRates = settings.outputRates
+	self.slotSize = settings.slotSize
+	self.holdAngle = settings.holdAngle
+	self:SetModel(settings.model)
+	self.deviceClass = type
+	self.DeviceName = settings.name
+end
+
 function ENT:Initialize()
+	self.BaseClass.Initialize(self)
 	if SERVER then
-		self.slotSize = -1
-		self.heightOffset = 0
-		self.holdAngle = Angle(0, 0, 0)
 		self.resourceCache = {}
 		self.outputCounter = {}
-		self.sound = nil
 		self.holder = nil
-		ResourceDistribution.AddDevice(self)
+		--ResourceDistribution.AddDevice(self)
 	end
 	self.type = "GENERATOR"
 end

@@ -7,6 +7,10 @@ ENT.AdminSpawnable	= true
 
 ENT.DeviceName = "Unknown Device"
 
+function ENT:SetupDataTables()
+	self:NetworkVar( "String", 0, "DeviceClass")
+end
+
 function ENT:Initialize()
 	if SERVER then
 		self:SetUseType(SIMPLE_USE)
@@ -14,9 +18,10 @@ function ENT:Initialize()
 		self.lastuse = CurTime()
 		self.enabled = false
 		self.runnable = false
+	elseif CLIENT then
+		self:Setup(self:GetDeviceClass())
 	end
-	self.inputRates = {}
-	self.outputRates = {}
+	
 end
 
 function ENT:GetDeviceName()
