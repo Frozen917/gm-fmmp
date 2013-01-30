@@ -5,7 +5,6 @@ include("shared.lua")
 
 function ENT:Setup(type)
 	local settings = FMMP_Holders[type]
-	self.DeviceName = settings.name
 	for _,slot in pairs(settings.slots) do
 		table.insert(self.slots, Slot.New(self, unpack(slot)))
 	end
@@ -13,6 +12,9 @@ function ENT:Setup(type)
 		table.insert(self.plugs, Plug.New(self, i, unpack(plug)))
 	end
 	self:SetModel(settings.model)
+	self.DeviceName = settings.name
+	
+	PrintTable(self)
 end
 
 function ENT:GetType()

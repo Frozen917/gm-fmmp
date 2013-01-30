@@ -1,20 +1,12 @@
 TOOL.Mode       = "fmp_holder_tool"
-TOOL.Category   = "FMP GameMode"
+TOOL.Category   = "F2MP GameMode"
 TOOL.Name       = "Holder Tool"
-TOOL.Tab 		= "FMP"
+TOOL.Tab 		= "F2MP"
 
 
-TOOL.ClientConVar["ent"] = "sb_small_holder"
+TOOL.ClientConVar["type"] = "sb_small_holder"
 TOOL.ClientConVar["freeze"] = "0"
 
-
-
-local allowedClasses = {}
-
-local function RegisterHolder(sName, sClass, sModel)
-	list.Add("FMPHolders", {name = sName, ent = sClass, model = sModel })
-	table.insert(allowedClasses, sClass)
-end
 -- CLIENT
 if CLIENT then
     language.Add("Tool.fmp_holder_tool.name", "Holder Tool" )
@@ -24,11 +16,6 @@ if CLIENT then
 	
 	
 end
-
-RegisterHolder("Generic 1x Small Holder", "sb_small_holder", "models/mandrac/lgm/genholder_small_single.mdl")
-RegisterHolder("Smallbridge 8x Small Holder - SW", "sb_smallbridge_multi_holder", "models/mandrac/lgm/genholder_small_sw.mdl")
-RegisterHolder("SmallBridge 2x Large Holder - SW", "sb_smallbridge_holder", "models/mandrac/lgm/genholder_sw.mdl")
-
 
 if CLIENT then
 
@@ -50,7 +37,7 @@ if CLIENT then
 		image:SetVisible(false)
 		
 		local x, y = 0, 0
-		for _,v in ipairs(list.Get("FMPHolders")) do
+		for typ,holder in pairs(Devices.GetRegisteredHolders()) do
 			panel:SetTall(panel:GetTall() + 150)
 			local spawnIcon = vgui.Create("DModelPanel", panel)
 			spawnIcon:SetPos(x, y)
@@ -58,34 +45,34 @@ if CLIENT then
 			spawnIcon:SetCamPos(Vector(170, 170, 0))
 			spawnIcon:SetFOV(80)
 			spawnIcon:SetLookAt(Vector(0, 0, 0))
-			spawnIcon:SetToolTip(v.name)
-			spawnIcon:SetModel(v.model)
+			spawnIcon:SetToolTip(holder.name)
+			spawnIcon:SetModel(holder.model)
 			spawnIcon.DoClick = function(icon)
 				image:SetPos(icon:GetPos())
 				image:SetVisible(true)
-				RunConsoleCommand("fmp_holder_tool_ent", v.ent)
+				RunConsoleCommand("fmp_holder_tool_type", typ)
 			end
 			
 			local lbl = vgui.Create("DLabel", panel)
-			lbl:SetText(v.name)
+			lbl:SetText(holder.name)
 			lbl:SetTall(50)
 			lbl:SetPos(x + 170, y + 25)
 			lbl:SetWrap(true)
 			
-			y = y + 160
+			y = y + 155
 		end
 	end
 end
 -- SHARED
 function TOOL:LeftClick(trace)
 	if SERVER then
-		local className = self:GetClientInfo("ent")
-		if table.HasValue(allowedClasses, className) then
-				local spawnFunction = Util.GetStoredMember(className, "SpawnFunction")
-				spawnFunction(Util.GetStoredEntity(className), self:GetOwner(), trace, self:GetClientInfo("freeze") == "1")
-			return true
+		local typ = self:GetClientInfo("type")
+		local spawnFunction = Util.GetStoredMember("f2mp_holder", "SpawnFunction")
+		if spawnFunction then
+			local entity = spawnFunction(Util.GetStoredEntity("f2mp_holder"), self:GetOwner(), trace, self:GetClientInfo("freeze") == "1")
+			entity:Setup(typ)
 		else
-			self:GetOwner():PrintMessage(HUD_PRINTTALK, className.." is not a valid holder!")
+			self:GetOwner():PrintMessage(HUD_PRINTTALK, "Unable to find a valid spawn function")
 			return false
 		end
 	end

@@ -1,5 +1,5 @@
 ENT.Type 			= "anim"
-ENT.Base 			= "f2mp_base_r"
+ENT.Base 			= "f2mp_base_rd"
 ENT.Category 		= "FMP GameMode"
 
 ENT.Spawnable 		= true
