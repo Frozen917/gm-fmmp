@@ -15,7 +15,6 @@ function Util.GetStoredMember(sClassName, sMemberName)
 end
 
 function Util.GetStoredEntity(sClassName)
-	print(sClassName)
 	return scripted_ents.GetStored(sClassName).t
 end
 

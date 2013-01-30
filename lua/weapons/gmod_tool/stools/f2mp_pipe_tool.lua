@@ -1,7 +1,7 @@
-TOOL.Mode       = "fmp_pipe_tool"
+TOOL.Mode       = "f2mp_pipe_tool"
 TOOL.Category   = "Building Tools"
 TOOL.Name       = "Pipe Tool"
-TOOL.Tab        = "FMP"
+TOOL.Tab        = "F2MP"
 
 PipeTool = {}
 PipeTool.pipes = {}    -- shared, has to be synchronized manually
@@ -12,10 +12,10 @@ PipeTool.pipeMaxLength = 512
 
 -- CLIENT
 if CLIENT then
-    language.Add("Tool.fmp_pipe_tool.name", "Pipe Tool" )
-    language.Add("Tool.fmp_pipe_tool.desc", "Create a pipe !" )
-    language.Add("Tool.fmp_pipe_tool.0", "Left click an entity to create a pipe")
-    language.Add("Tool.fmp_pipe_tool.1", "Left click an entity to finish the pipe")
+    language.Add("Tool.f2mp_pipe_tool.name", "Pipe Tool" )
+    language.Add("Tool.f2mp_pipe_tool.desc", "Create a pipe !" )
+    language.Add("Tool.f2mp_pipe_tool.0", "Left click an entity to create a pipe")
+    language.Add("Tool.f2mp_pipe_tool.1", "Left click an entity to finish the pipe")
 
     function PipeTool.DrawPipes()
         for k,v in pairs(PipeTool.pipes) do

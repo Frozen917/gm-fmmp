@@ -8,6 +8,9 @@ function ENT:SpawnFunction(spawner, trace, frozen, ...)
 	local a = trace.HitNormal:Angle() 
 	a.pitch = a.pitch + 90
 	ent:Setup(...)
+	ent:PhysicsInit(SOLID_VPHYSICS)
+	ent:SetMoveType(MOVETYPE_VPHYSICS)
+	ent:SetSolid(SOLID_VPHYSICS)
 	ent:Spawn()
 	ent:Activate()
 	local min = ent:OBBMins()
@@ -18,7 +21,7 @@ function ENT:SpawnFunction(spawner, trace, frozen, ...)
 	undo.Create(txt)
 		undo.AddEntity(ent)
 		undo.SetPlayer(spawner)
-		undo.SetCustomUndoText("Undone " .. self.DeviceName)
+		undo.SetCustomUndoText("Undone " .. ent.DeviceName)
 	undo.Finish()
 end
 

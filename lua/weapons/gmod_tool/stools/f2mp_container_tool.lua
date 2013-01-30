@@ -68,7 +68,7 @@ end
 function TOOL:LeftClick(trace)
 	if SERVER then
 		local typ = self:GetClientInfo("type")
-		local spawnFunc = Util.GetStoredMember("f2mp_container", "SpawnFunction")
+		local spawnFunc = Util.GetStoredMember("f2mp_holdable_container", "SpawnFunction")
 		if spawnFunc then
 			local entity = spawnFunc(Util.GetStoredEntity("f2mp_holdable_container"), self:GetOwner(), trace, self:GetClientInfo("freeze") == "1", typ)
 			if self:GetClientInfo("autohold") == "1" then
@@ -96,3 +96,4 @@ function TOOL:LeftClick(trace)
 	end
 	return true
 end
+
