@@ -21,7 +21,12 @@ function ENT:Initialize()
 	elseif CLIENT then
 		self:Setup(self:GetDeviceClass())
 	end
-	
+end
+
+function ENT:CallDeviceHook(sHookName, ...)
+	if sHookName and self.hooks[sHookName] then
+		return self.hooks[sHookName](...)
+	end
 end
 
 function ENT:GetDeviceName()

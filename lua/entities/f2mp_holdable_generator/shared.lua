@@ -20,6 +20,7 @@ function ENT:Setup(type)
 	self.deviceClass = type
 	self.DeviceName = settings.name
 	self:SetModel(settings.model)
+	self.hooks = settings.hooks
 end
 
 function ENT:Initialize()
